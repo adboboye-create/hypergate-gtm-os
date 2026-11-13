@@ -25,7 +25,8 @@ Root files: `CLAUDE.md` (this file), `README.md` (what the repo is), `.gitignore
   - `context/positioning/positioning.md`: category, target customer, today's alternative, unique value, proof, positioning statement.
   - `context/positioning/competitors.md`: competitor table, where Hypergate wins and loses, how to respond.
 - `context/messaging/`: approved value props, proof points and message house. Read before writing any copy.
-  - `context/messaging/messaging.md`: core message, four pillars with proof, angle per persona, words to use and avoid. Draft, not yet approved; no `facts.md` yet.
+  - `context/messaging/messaging.md`: core message, four pillars with proof, angle per persona, words to use and avoid. Draft, not yet approved.
+  - `context/messaging/facts.md`: the only source of names and claims for copy (`/campaign-copy` facts gate). Draft v0.1: 8 sourced Files claims, no approved customer names, sender unknown. Needs Hypergate approval.
 - `context/brand-kit/`: voice, tone, visual rules and assets. Read before producing anything customer facing.
   - `context/brand-kit/brand.md`: tone of voice and key phrases from Hypergate's own copy. Visual rules not researched.
 - `context/docs/`: GTM system design, decision memos and customer stories.
