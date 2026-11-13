@@ -1,6 +1,6 @@
 # Workflow spec: Intune migration leaves file shares behind
 
-**Status:** STRUCTURE-APPROVED 2026-11-13 · E1, E2 approved · E3 and LinkedIn pending · facts.md claims pending Hypergate approval
+**Status:** STRUCTURE-APPROVED 2026-11-13 · E1, E2, E3 approved · LinkedIn pending · facts.md claims pending Hypergate approval
 
 Approval note: the user approved sections 1 to 3 and told Claude to "do the best thing" for the rest, so sections 4 to 7 are Claude's recommendations, approved by delegation. Re-open any section before `/campaign-copy` if it needs a change.
 
@@ -212,3 +212,23 @@ With Hypergate Files, they open them in Word, Excel or the PDF app {with no extr
 - FALLBACK: "If staff open files from the network shares on their phones today, they'll probably expect the same after the move to Intune."
 
 Facts used: F5, F6, F7. Word counts: 58 (C1 true), 57 (fallback).
+
+### Email 3 (day 10, same thread). Approved 2026-11-13
+
+**Subject:** `Re:` + the Email 1 subject (unchanged).
+
+**Body** (static, spintax on every line)
+
+```
+{{first_name}},
+
+{Last note from me on this.|I'll leave it here after this one.|One last note on this.}
+
+{If you're unsure it fits your devices and shares, Hypergate tests it with you on your own setup.|If fit is the question, Hypergate tests it with you on your own devices and shares.}
+
+{If file access on phones sits with someone else on the team, who should I ask?|If someone else owns file access on phones, who would that be?}
+
+{{sender_signature}}
+```
+
+Facts used: F9. Word counts: 41 to 46.
