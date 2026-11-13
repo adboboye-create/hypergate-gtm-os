@@ -9,3 +9,6 @@
 # OS and local settings
 .DS_Store
 .claude/settings.local.json
+
+# Local tool config
+.treg/
