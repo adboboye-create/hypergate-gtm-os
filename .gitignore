@@ -1,0 +1,11 @@
+# Secrets
+.env
+.env.*
+
+# Data exports
+*.csv
+*.xlsx
+
+# OS and local settings
+.DS_Store
+.claude/settings.local.json
