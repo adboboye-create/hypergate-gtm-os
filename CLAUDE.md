@@ -20,10 +20,16 @@ Root files: `CLAUDE.md` (this file), `README.md` (what the repo is), `.gitignore
   - `context/icp/icp.md`: five-layer ICP (firmographic, technographic, intent signals, persona, engagement readiness), not-a-fit list and open questions.
   - `context/icp/personas.md`: champion (mobility/EMM admin), economic buyer (unconfirmed) and influencer (identity/security engineering), with pains, triggers and objections.
   - `context/icp/signal-matrix.md`: signal matrix v0.1 (work in progress): industry segments x personas with angles, scored signals, top five signals to build first, workflow tracker.
-- `context/positioning/`: positioning, category, competitors and differentiators. Read before any messaging or competitive work. Empty so far.
-- `context/messaging/`: approved value props, proof points and message house. Read before writing any copy. Empty so far (no `facts.md` yet).
-- `context/brand-kit/`: voice, tone, visual rules and assets. Read before producing anything customer facing. Empty so far.
-- `context/docs/`: GTM system design and decision memos.
+- `context/positioning/`: positioning, category, competitors and differentiators. Read before any messaging or competitive work.
+  - `context/positioning/value-proposition.md`: job, pain, gain and proof for each persona.
+  - `context/positioning/positioning.md`: category, target customer, today's alternative, unique value, proof, positioning statement.
+  - `context/positioning/competitors.md`: competitor table, where Hypergate wins and loses, how to respond.
+- `context/messaging/`: approved value props, proof points and message house. Read before writing any copy.
+  - `context/messaging/messaging.md`: core message, four pillars with proof, angle per persona, words to use and avoid. Draft, not yet approved; no `facts.md` yet.
+- `context/brand-kit/`: voice, tone, visual rules and assets. Read before producing anything customer facing.
+  - `context/brand-kit/brand.md`: tone of voice and key phrases from Hypergate's own copy. Visual rules not researched.
+- `context/docs/`: GTM system design, decision memos and customer stories.
+  - `context/docs/case-studies.md`: every customer story found (3 published, 6 logo only, 3 unverified).
   - `context/docs/gtm-system.md`: end-to-end outbound GTM system (12 steps, tools, open decisions, build order).
   - `context/docs/partner-region-policy.md`: decision memo for Hypergate sales on outbound in partner regions.
   - `context/docs/compliance-cold-outreach.md`: research brief for legal on cold email and LinkedIn rules by country (not legal advice).
@@ -36,7 +42,8 @@ Root files: `CLAUDE.md` (this file), `README.md` (what the repo is), `.gitignore
   - `templates/facts-template.md`: template for `context/messaging/facts.md`.
 - `knowledge-base/learnings/`: what worked, what failed and why. Read before planning a new campaign. Empty so far.
 - `meetings/`: meeting notes and transcripts, named YYYY-MM-DD-topic.md. Read when context from a conversation is needed. Empty so far.
-- `output/campaigns/`: finished and draft campaign deliverables, one folder per campaign. Read when reusing or iterating on past work. Empty so far.
+- `output/campaigns/`: finished and draft campaign deliverables, one folder per campaign. Read when reusing or iterating on past work.
+  - `output/campaigns/campaign-strategy.md`: 19 ranked outbound campaign ideas from `/campaign-strategy`, with mother intent, tier, signal source, angle, volume band and difficulty.
 - `tools/`: scripts and notes on tool integrations. Read before automating anything.
   - `tools/sequencer-comparison.md`: EmailBison vs Instantly vs PlusVibe, with recommendation.
   - `tools/rex/`, `tools/crawl4ai/`, `tools/agent-browser/`: see Tools below.
