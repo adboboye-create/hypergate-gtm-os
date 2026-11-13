@@ -8,8 +8,8 @@ Built with `/build-workflow-spec` from idea #1 in [campaign-strategy.md](../camp
 
 **Read first**
 - No sends until legal signs off the compliance brief and Hypergate sales answers the partner-region memo ([gtm-system.md, Open decisions 2 and 3](../../../context/docs/gtm-system.md)).
-- `context/messaging/facts.md` does not exist yet. Every customer name, number or proof point stays a `{{placeholder}}` until it is approved there.
-- This file holds structure only. No copy. Copy is written by `/campaign-copy`, which reads this file.
+- Claims come only from [facts.md](../../../context/messaging/facts.md) (draft, F1 to F9 pending Hypergate approval). It has no authorized customer names, so no proof point appears in the copy.
+- Sections 1 to 7 are the structure. The approved copy (written with `/campaign-copy`) is under "Copy" at the end.
 
 ---
 
@@ -144,13 +144,13 @@ Internal only, never in copy: `job_url`, `job_posted_date`, `r1_match_count`, `h
 - [x] Engine/ICP markers on every section
 - [x] Cadence & channel declared
 
-**Next:** `/campaign-copy` on this file. Before copy: create `context/messaging/facts.md` (template in `knowledge-base/playbooks/templates/facts-template.md`).
+**Next:** get facts.md approved by Hypergate, choose the email and LinkedIn tools, then export the copy and run `/campaign-qa`.
 
 ---
 
 ## Copy
 
-Written with `/campaign-copy`. Every claim traces to [facts.md](../../../context/messaging/facts.md) (F1 to F8), which is a draft pending Hypergate approval. No customer names: none are authorized. Variables follow section 6.
+Written with `/campaign-copy`. Every claim traces to [facts.md](../../../context/messaging/facts.md) (F1 to F9), which is a draft pending Hypergate approval. No customer names: none are authorized. Variables follow section 6.
 
 **Campaign:** Intune migration leaves file shares behind. **Register:** signal play, technical peer voice. **Spelling:** American until Hypergate confirms.
 
