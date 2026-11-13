@@ -256,7 +256,13 @@ Size is **not** a gate. There is no evidence for a minimum (icp.md open question
 - Is the domain a public-sector or government domain?
   - Yes → flag for the compliance rule below.
   - No → normal handling.
-- **Compliance gate [open].** Outreach targets DACH and the EU (icp.md §1). The research does not cover the rules for cold email to these regions or to public bodies. Legal sign-off on the lawful basis, opt-out wording and the sender identity (which Papers entity, CO §14) is needed before the first send. Until then: no sends.
+- **Compliance gate [awaiting legal sign-off].** Research brief: [compliance-cold-outreach.md](compliance-cold-outreach.md). It is research for legal review, not legal advice. Until legal signs off: no sends.
+  - **Germany, Austria and Italy require consent for B2B email.** German and Italian sources extend this to LinkedIn messages. In these core markets there is no cold email and no cold sales DM.
+  - Switzerland, France, the UK, the US and Canada are "yes with conditions". The conditions are in the brief.
+  - Every other EU country is unresearched, so treat it as No.
+  - The brief proposes an `outreach_regime` column in Clay, set from the account's country, plus gates G7-C1 to C8 that replace this line once legal approves.
+  - Every row must also store the email's source and collection date, which the GDPR Art. 14 notice needs.
+  - LinkedIn's User Agreement bans automated messaging tools. This limits the LinkedIn tool choice in step 8.
 
 ---
 
@@ -414,9 +420,9 @@ Size is **not** a gate. There is no evidence for a minimum (icp.md open question
 
 1. **Stack:**
    - CRM: **Zoho CRM**, decided 2026-11-13. Its connector needs authorising.
-   - Email sequencer: open. Comparison in progress at `tools/sequencer-comparison.md`.
+   - Email sequencer: EmailBison recommended, if it confirms EU-only hosting and a DPA covering EU transfer clauses (SCCs), Swiss data law and its full subprocessor list in writing. Otherwise Instantly. See `tools/sequencer-comparison.md`.
    - LinkedIn tool: open.
-2. **Compliance:** lawful basis, opt-out wording and sender entity for cold email in DACH/EU and to public bodies (step 7). Research brief for legal: `context/docs/compliance-cold-outreach.md`. No sends until signed off.
+2. **Compliance:** lawful basis, opt-out wording and sender entity for cold email in DACH/EU and to public bodies (step 7). Research brief for legal: `context/docs/compliance-cold-outreach.md`, with 18 questions for legal. No sends until signed off. **Impact:** DE, AT and IT are opt-in, so outreach in core DACH markets needs an opt-in route (LinkedIn connect without a pitch, phone in DE, inbound) rather than cold email. Hypergate also needs a privacy notice for prospects, and possibly an EU representative under GDPR Art. 27.
 3. **Partner policy** in partner regions (step 5 Part C, step 10). With Hypergate sales: [partner-region-policy.md](partner-region-policy.md).
 4. **Customer list** from Hypergate for suppression (step 2). Pull it from Zoho CRM once the connector is authorised.
 5. **Messaging and brand-kit files** (step 0), which `/campaign-copy` needs.
