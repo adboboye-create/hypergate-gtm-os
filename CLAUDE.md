@@ -13,21 +13,37 @@ Hypergate (https://hypergate.com) sells Kerberos single sign-on and on-prem file
 
 ## How this folder works
 
-- `.claude/skills/`: reusable Claude skills for repeat GTM tasks. Read when a task matches a skill.
+Root files: `CLAUDE.md` (this file), `README.md` (what the repo is), `.gitignore`, `.env` (secrets, empty, never committed). Local only and ignored by Git: `.claude/settings.local.json`, `.treg/`.
+
+- `.claude/skills/`: reusable Claude skills for repeat GTM tasks, one folder per skill (see Skills below). Read when a task matches a skill.
 - `context/icp/`: ideal customer profiles and buyer personas. Read before any targeting, list building or copy.
   - `context/icp/icp.md`: five-layer ICP (firmographic, technographic, intent signals, persona, engagement readiness), not-a-fit list and open questions.
   - `context/icp/personas.md`: champion (mobility/EMM admin), economic buyer (unconfirmed) and influencer (identity/security engineering), with pains, triggers and objections.
-- `context/positioning/`: positioning, category, competitors and differentiators. Read before any messaging or competitive work.
-- `context/messaging/`: approved value props, proof points and message house. Read before writing any copy.
-- `context/brand-kit/`: voice, tone, visual rules and assets. Read before producing anything customer facing.
+  - `context/icp/signal-matrix.md`: signal matrix v0.1 (work in progress): industry segments x personas with angles, scored signals, top five signals to build first, workflow tracker.
+- `context/positioning/`: positioning, category, competitors and differentiators. Read before any messaging or competitive work. Empty so far.
+- `context/messaging/`: approved value props, proof points and message house. Read before writing any copy. Empty so far (no `facts.md` yet).
+- `context/brand-kit/`: voice, tone, visual rules and assets. Read before producing anything customer facing. Empty so far.
+- `context/docs/`: GTM system design and decision memos.
+  - `context/docs/gtm-system.md`: end-to-end outbound GTM system (12 steps, tools, open decisions, build order).
+  - `context/docs/partner-region-policy.md`: decision memo for Hypergate sales on outbound in partner regions.
+  - `context/docs/compliance-cold-outreach.md`: research brief for legal on cold email and LinkedIn rules by country (not legal advice).
 - `context/docs/research/`: raw research and source material with links. Read when you need to verify or cite a fact.
-- `knowledge-base/playbooks/`: step by step how-tos for repeatable motions. Read before running a known motion.
-- `knowledge-base/learnings/`: what worked, what failed and why. Read before planning a new campaign.
-- `meetings/`: meeting notes and transcripts, named YYYY-MM-DD-topic.md. Read when context from a conversation is needed.
-- `output/campaigns/`: finished and draft campaign deliverables, one folder per campaign. Read when reusing or iterating on past work.
+  - `company.md`, `customers.md`, `competitors.md`, `market.md`, `signals.md`, `voice.md`.
+- `knowledge-base/playbooks/`: step by step how-tos for repeatable motions, from the starter kit. Read before running a known motion.
+  - `copy-frameworks.md`, `copy-iron-laws.md`, `copy-bans.yaml`, `linkedin-dm-frameworks.md`: copy rules and frameworks.
+  - `signal-matrix-framework.md`, `workflow-anatomy.md`: targeting and workflow method.
+  - `clay/`: `iron-laws.md`, `expert.md`, `formulas.md`, `prompts.md`, `actions-data-credits.md`.
+  - `templates/facts-template.md`: template for `context/messaging/facts.md`.
+- `knowledge-base/learnings/`: what worked, what failed and why. Read before planning a new campaign. Empty so far.
+- `meetings/`: meeting notes and transcripts, named YYYY-MM-DD-topic.md. Read when context from a conversation is needed. Empty so far.
+- `output/campaigns/`: finished and draft campaign deliverables, one folder per campaign. Read when reusing or iterating on past work. Empty so far.
 - `tools/`: scripts and notes on tool integrations. Read before automating anything.
+  - `tools/sequencer-comparison.md`: EmailBison vs Instantly vs PlusVibe, with recommendation.
+  - `tools/rex/`, `tools/crawl4ai/`, `tools/agent-browser/`: see Tools below.
 - `weekly-priorities/`: one file per ISO week (YYYY-Www.md) with the week's goals. Read at the start of every session.
+  - `2026-W46.md`.
 - `work-log/`: one file per ISO week, matching the priorities file, with timestamped entries. Write to it after every change.
+  - `2026-W46.md`.
 
 ## Rules
 
