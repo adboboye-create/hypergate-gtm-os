@@ -48,7 +48,7 @@ Root files: `CLAUDE.md` (this file), `README.md` (what the repo is), `.gitignore
 - `meetings/`: meeting notes and transcripts, named YYYY-MM-DD-topic.md. Read when context from a conversation is needed. Empty so far.
 - `output/campaigns/`: finished and draft campaign deliverables, one folder per campaign. Read when reusing or iterating on past work.
   - `output/campaigns/campaign-strategy.md`: 19 ranked outbound campaign ideas from `/campaign-strategy`, with mother intent, tier, signal source, angle, volume band and difficulty.
-  - `output/campaigns/intune-migration-file-shares/workflow-spec.md`: workflow spec for idea #1 (Intune migration job posts, Files-led), from `/build-workflow-spec`: mother intent, inclusion/exclusion, sources, signals, 5-cell routing matrix with angles, variables, cadence. STRUCTURE-APPROVED, copy pending.
+  - `output/campaigns/intune-migration-file-shares/workflow-spec.md`: workflow spec for idea #1 (Intune migration job posts, Files-led), from `/build-workflow-spec`: mother intent, inclusion/exclusion, sources, signals, 5-cell routing matrix with angles, variables, cadence, plus approved copy (3 emails, LinkedIn DM). COPY-APPROVED; facts pending Hypergate approval.
 - `tools/`: scripts and notes on tool integrations. Read before automating anything.
   - `tools/sequencer-comparison.md`: EmailBison vs Instantly vs PlusVibe, with recommendation.
   - `tools/rex/`, `tools/crawl4ai/`, `tools/agent-browser/`: see Tools below.

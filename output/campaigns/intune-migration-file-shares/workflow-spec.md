@@ -1,6 +1,6 @@
 # Workflow spec: Intune migration leaves file shares behind
 
-**Status:** STRUCTURE-APPROVED 2026-11-13 · E1, E2, E3 approved · LinkedIn pending · facts.md claims pending Hypergate approval
+**Status:** COPY-APPROVED 2026-11-13 · facts.md claims (F1 to F9) pending Hypergate approval · no sends until legal and partner decisions
 
 Approval note: the user approved sections 1 to 3 and told Claude to "do the best thing" for the rest, so sections 4 to 7 are Claude's recommendations, approved by delegation. Re-open any section before `/campaign-copy` if it needs a change.
 
@@ -232,3 +232,31 @@ Facts used: F5, F6, F7. Word counts: 58 (C1 true), 57 (fallback).
 ```
 
 Facts used: F9. Word counts: 41 to 46.
+
+### LinkedIn. Approved 2026-11-13
+
+**Connection request (day 2):** empty, no note.
+
+**DM (day 7, only if connected):** one sentence, dynamic on R1, no spintax, no link, no signature.
+- + R1 = `ivanti` / `workspace_one` / `blackberry` / `soti` (cells A to D): "{{first_name}}, once {{old_emm}} is gone, will phones still need to reach the on-prem file shares, or is that content moving to OneDrive?"
+- + R1 = `not_named` (cell E): "{{first_name}}, with the move to Intune, will phones still need the on-prem file shares, or are those heading to OneDrive?"
+
+One DM only, per section 7 cadence. No DM 2.
+
+### Sample: cell A, Email 1 as received
+
+> **Subject:** intune and file shares
+>
+> Sam,
+>
+> From the Endpoint Engineer role Acme Bank has open, it reads like devices are moving from Ivanti to Intune.
+>
+> If phones reach file shares through Docs@Work today, my guess is that piece stays behind with Ivanti, since Intune has no built-in way to reach SMB shares.
+>
+> Hypergate Files gives phones the same on-prem SMB and Windows shares under Intune, with no extra servers, proxies or middleware.
+>
+> Is phone access to file shares part of the Intune plan?
+>
+> {{sender_signature}}
+
+(Sam and Acme Bank are illustrative values, not a real lead.)
