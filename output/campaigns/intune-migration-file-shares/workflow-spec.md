@@ -1,6 +1,6 @@
 # Workflow spec: Intune migration leaves file shares behind
 
-**Status:** STRUCTURE-APPROVED 2026-11-13 · copy pending
+**Status:** STRUCTURE-APPROVED 2026-11-13 · E1 approved · E2/E3 and LinkedIn pending · facts.md claims pending Hypergate approval
 
 Approval note: the user approved sections 1 to 3 and told Claude to "do the best thing" for the rest, so sections 4 to 7 are Claude's recommendations, approved by delegation. Re-open any section before `/campaign-copy` if it needs a change.
 
@@ -145,3 +145,44 @@ Internal only, never in copy: `job_url`, `job_posted_date`, `r1_match_count`, `h
 - [x] Cadence & channel declared
 
 **Next:** `/campaign-copy` on this file. Before copy: create `context/messaging/facts.md` (template in `knowledge-base/playbooks/templates/facts-template.md`).
+
+---
+
+## Copy
+
+Written with `/campaign-copy`. Every claim traces to [facts.md](../../../context/messaging/facts.md) (F1 to F8), which is a draft pending Hypergate approval. No customer names: none are authorized. Variables follow section 6.
+
+**Campaign:** Intune migration leaves file shares behind. **Register:** signal play, technical peer voice. **Spelling:** American until Hypergate confirms.
+
+### Email 1 (day 1, new thread). Approved 2026-11-13
+
+**Subject** (static, same for the whole thread): `{intune and file shares|file shares after intune|file shares on intune}`
+
+**Body**
+
+```
+{{first_name}},
+
+{{e1l1}}
+
+{{e1l2}}
+
+Hypergate Files {gives|brings} phones the same on-prem SMB and Windows shares under Intune, with no extra servers, proxies or middleware.
+
+{Is phone access to file shares part of the Intune plan?|Are file shares on phones part of the Intune plan?|Is file-share access from phones in scope for the Intune move?}
+
+{{sender_signature}}
+```
+
+**{{e1l1}}: mother intent (dynamic, exhaustive on R1, no fallback)**
+- + R1 = `ivanti` / `workspace_one` / `blackberry` / `soti` (cells A to D): "From the {{job_title}} role {{company_name}} has open, it reads like devices are moving from {{old_emm}} to Intune."
+- + R1 = `not_named` (cell E): "From the {{job_title}} role {{company_name}} has open, it reads like devices are moving to Intune."
+
+**{{e1l2}}: what stays behind (dynamic, exhaustive on R1, no fallback)**
+- + A, R1 = `ivanti`: "If phones reach file shares through Docs@Work today, my guess is that piece stays behind with Ivanti, since Intune has no built-in way to reach SMB shares."
+- + B, R1 = `workspace_one`: "If file shares on phones run through Workspace ONE Content today, that probably doesn't make the move, because Intune has no built-in way to reach SMB shares."
+- + C, R1 = `blackberry`: "Could be off, but if BlackBerry Work is how phones open file shares today, it stays with BlackBerry, and Intune has no built-in way to reach SMB shares."
+- + D, R1 = `soti`: "If devices get shared files through SOTI Hub today, that likely stays with SOTI, since Intune has no built-in way to reach SMB shares."
+- + E, R1 = `not_named`: "Intune has no built-in way to reach SMB file shares, so my guess is phone access to them needs its own answer in the move."
+
+Facts used: F1, F2, F4. Word counts: A 72, B 70, C 71, D 69, E 66.
