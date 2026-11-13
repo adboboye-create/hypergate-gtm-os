@@ -39,8 +39,8 @@ Product one-liner (context, not copy): Kerberos SSO and on-prem file access for 
 | F5 | Files open in native apps | "files open in Word, Excel or the PDF app, no extra viewer" | "Users can open files in their respective native apps (Word, Excel, PDF ect.) without requiring additional viewers" (https://hypergate.com/files/, [company.md §2.2](../docs/research/company.md)) | pending |
 | F6 | SMB2/SMB3 and NetApp | "SMB2/SMB3 shares and NetApp" | https://hypergate.com/files/ ([company.md §2.2](../docs/research/company.md)) | pending |
 | F7 | Intune app exists | "there's a version built for Intune (Hypergate Files for Intune)" | Google Play listing "Hypergate Files for Intune", package com.hypergate.files.intune ([company.md §2.2](../docs/research/company.md)) | pending |
-| F9 | Compatibility tested with the customer | "Hypergate tests it with you on your own devices and shares" | FAQ: "just contact us and we will test it together with you." (https://hypergate.com/faq/, via [personas.md §1 Objections](../icp/personas.md) and [voice.md §6](../docs/research/voice.md)) | pending |
 | F8 | Swiss company | "Hypergate is built by Papers AG in Zug, Switzerland" | https://hypergate.com/about-us/ ([CLAUDE.md](../../CLAUDE.md)) | pending |
+| F9 | Compatibility tested with the customer | "Hypergate tests it with you on your own devices and shares" | FAQ: "just contact us and we will test it together with you." (https://hypergate.com/faq/, via [personas.md §1 Objections](../icp/personas.md) and [voice.md §6](../docs/research/voice.md)) | pending |
 
 **Formatting rules for proof**
 - Write "Hypergate" and "Hypergate Files", never "hypergate.com" (domains turn into links).
