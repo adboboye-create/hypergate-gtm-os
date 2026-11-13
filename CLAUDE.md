@@ -15,6 +15,8 @@ Hypergate (https://hypergate.com) sells Kerberos single sign-on and on-prem file
 
 - `.claude/skills/`: reusable Claude skills for repeat GTM tasks. Read when a task matches a skill.
 - `context/icp/`: ideal customer profiles and buyer personas. Read before any targeting, list building or copy.
+  - `context/icp/icp.md`: five-layer ICP (firmographic, technographic, intent signals, persona, engagement readiness), not-a-fit list and open questions.
+  - `context/icp/personas.md`: champion (mobility/EMM admin), economic buyer (unconfirmed) and influencer (identity/security engineering), with pains, triggers and objections.
 - `context/positioning/`: positioning, category, competitors and differentiators. Read before any messaging or competitive work.
 - `context/messaging/`: approved value props, proof points and message house. Read before writing any copy.
 - `context/brand-kit/`: voice, tone, visual rules and assets. Read before producing anything customer facing.
