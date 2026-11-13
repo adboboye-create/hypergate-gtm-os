@@ -1,0 +1,522 @@
+{
+  "title": "[Hypergate] GTM System",
+  "subtitle": "Outbound GTM system from context/docs/gtm-system.md (v1, 2026-11-13). Tools marked open are not chosen yet. No sends until legal sign-off. Row 1 reads left to right, row 2 right to left, row 3 left to right.",
+  "rows": [
+    {
+      "title": "Find and qualify accounts (steps 0 to 4)",
+      "direction": "ltr",
+      "columns": [
+        "1A",
+        "1B",
+        "1C",
+        "1D",
+        "1E",
+        "1F",
+        [
+          "hold",
+          "1G",
+          "1H"
+        ]
+      ]
+    },
+    {
+      "title": "Route, find people, check email and country (steps 5 to 7)",
+      "direction": "rtl",
+      "columns": [
+        "2A",
+        "2B",
+        "2C",
+        "2D",
+        "2E",
+        "2F",
+        "2G",
+        [
+          "2H",
+          "2I"
+        ]
+      ]
+    },
+    {
+      "title": "Send, sort replies, record and learn (steps 8 to 11)",
+      "direction": "ltr",
+      "columns": [
+        "3A",
+        "3B",
+        "3C",
+        [
+          "o1",
+          "o2",
+          "o3",
+          "o4",
+          "o5"
+        ],
+        [
+          "a1",
+          "a2",
+          "a3",
+          "a4",
+          "a5"
+        ],
+        "3D",
+        "3E"
+      ]
+    }
+  ],
+  "nodes": {
+    "1A": {
+      "kind": "start",
+      "title": "Context OS",
+      "sub": "ICP, personas, signal matrix, messaging, playbooks",
+      "tools": [
+        "claude_code",
+        "github"
+      ],
+      "w": 300
+    },
+    "1B": {
+      "kind": "step",
+      "title": "Buying signals",
+      "sub": [
+        "W1 Acronis Files EOL",
+        "W2 NTLM on mobile",
+        "W3 EMM migration",
+        "W4 Frontline rollout",
+        "W5 Android Enterprise",
+        "W6 Sovereignty",
+        "W7 Lookalikes"
+      ],
+      "tools": [
+        "clay"
+      ]
+    },
+    "1C": {
+      "kind": "step",
+      "title": "Find companies",
+      "sub": "One row per domain, one workbook per signal",
+      "tools": [
+        "clay"
+      ]
+    },
+    "1D": {
+      "kind": "decision",
+      "title": "Known account?"
+    },
+    "supp": {
+      "kind": "exit",
+      "title": "Suppress, or attach signal to existing row",
+      "below": "1D",
+      "w": 240
+    },
+    "1E": {
+      "kind": "step",
+      "title": "Enrich",
+      "sub": [
+        "AD evidence",
+        "EMM in use",
+        "Device and OS clues",
+        "Second signal",
+        "Partner region"
+      ],
+      "tools": [
+        "clay",
+        "claude"
+      ]
+    },
+    "1F": {
+      "kind": "decision",
+      "title": "ICP fit?"
+    },
+    "fail": {
+      "kind": "exit",
+      "title": "Fail: keep reason, never send",
+      "below": "1F",
+      "w": 240
+    },
+    "1G": {
+      "kind": "branch",
+      "title": "Pass",
+      "sub": "On-prem AD and supported EMM known",
+      "w": 260
+    },
+    "1H": {
+      "kind": "branch",
+      "title": "Pass-provisional",
+      "sub": "Unknown, but Ready-now signal: first email confirms fit",
+      "w": 260
+    },
+    "hold": {
+      "kind": "exit",
+      "title": "Hold: re-check on a new signal",
+      "w": 260
+    },
+    "2A": {
+      "kind": "step",
+      "title": "Route by segment",
+      "sub": [
+        "Trigger: highest tier wins",
+        "Proof: police York, bank Jefferies, shift work Maersk",
+        "Owner: direct or partner (open)",
+        "Language: EN, DE, FR, IT"
+      ],
+      "tools": [
+        "clay"
+      ],
+      "w": 300
+    },
+    "2B": {
+      "kind": "step",
+      "title": "Find people",
+      "sub": "Up to 3: champion, influencer, economic buyer test",
+      "tools": [
+        "clay"
+      ]
+    },
+    "2C": {
+      "kind": "decision",
+      "title": "Contact found?"
+    },
+    "nocontact": {
+      "kind": "exit",
+      "title": "Back to Hold",
+      "below": "2C"
+    },
+    "2D": {
+      "kind": "decision",
+      "title": "In CRM?"
+    },
+    "incrm": {
+      "kind": "exit",
+      "title": "Follow CRM status",
+      "below": "2D"
+    },
+    "2E": {
+      "kind": "step",
+      "title": "Find and verify email",
+      "sub": "Waterfall, LeadMagic, then BounceBan",
+      "tools": [
+        "clay",
+        "LeadMagic",
+        "BounceBan"
+      ]
+    },
+    "2F": {
+      "kind": "decision",
+      "title": "Email valid?"
+    },
+    "li": {
+      "kind": "exit",
+      "title": "LinkedIn-only track",
+      "below": "2F"
+    },
+    "2G": {
+      "kind": "decision",
+      "title": "Country rules?"
+    },
+    "2H": {
+      "kind": "branch",
+      "title": "Opt-in only",
+      "sub": "DE, AT, IT, rest of EU: no cold email, LinkedIn without pitch, partners",
+      "w": 280
+    },
+    "2I": {
+      "kind": "branch",
+      "title": "Email allowed",
+      "sub": "FR, UK, US, CA; CH pending legal",
+      "w": 280
+    },
+    "3A": {
+      "kind": "step",
+      "title": "Sequence",
+      "sub": [
+        "Day 1 email",
+        "Day 2 connect, no pitch",
+        "Day 4 email with proof",
+        "Day 7 DM",
+        "Day 10 email"
+      ],
+      "tools": [
+        "Sequencer (open)",
+        "Sales Navigator"
+      ],
+      "w": 300,
+      "tool_label": "Sequencer + LinkedIn: open"
+    },
+    "3B": {
+      "kind": "decision",
+      "title": "Any reply?"
+    },
+    "noreply": {
+      "kind": "exit",
+      "title": "No response: suppress for window",
+      "below": "3B",
+      "w": 240
+    },
+    "3C": {
+      "kind": "step",
+      "title": "Classify reply",
+      "sub": "Same business day, a person sends every reply",
+      "tools": [
+        "claude"
+      ]
+    },
+    "o1": {
+      "kind": "branch",
+      "title": "Positive or meeting",
+      "h": 80
+    },
+    "o2": {
+      "kind": "branch",
+      "title": "Referral",
+      "h": 80
+    },
+    "o3": {
+      "kind": "branch",
+      "title": "Objection or not now",
+      "h": 80
+    },
+    "o4": {
+      "kind": "branch",
+      "title": "Wrong person",
+      "h": 80
+    },
+    "o5": {
+      "kind": "branch",
+      "title": "Not a fit or unsubscribe",
+      "h": 80
+    },
+    "a1": {
+      "kind": "step",
+      "title": "Book meeting, hand to owner",
+      "w": 300,
+      "h": 80
+    },
+    "a2": {
+      "kind": "step",
+      "title": "Add contact, warm thread",
+      "w": 300,
+      "h": 80
+    },
+    "a3": {
+      "kind": "step",
+      "title": "Answer or set follow-up",
+      "w": 300,
+      "h": 80
+    },
+    "a4": {
+      "kind": "exit",
+      "title": "Find the owner, back to 2B",
+      "w": 300,
+      "h": 80
+    },
+    "a5": {
+      "kind": "exit",
+      "title": "Disqualify or suppress everywhere",
+      "w": 300,
+      "h": 80
+    },
+    "3D": {
+      "kind": "step",
+      "title": "CRM",
+      "sub": "Account, contact, signal, activity, deal",
+      "tools": [
+        "Zoho CRM"
+      ]
+    },
+    "3E": {
+      "kind": "start",
+      "title": "Weekly review",
+      "sub": "Learnings, personas, ICP, next week's priorities",
+      "tools": [
+        "claude_code"
+      ],
+      "w": 300,
+      "align": "bottom"
+    }
+  },
+  "edges": [
+    [
+      "1A",
+      "1B"
+    ],
+    [
+      "1B",
+      "1C"
+    ],
+    [
+      "1C",
+      "1D"
+    ],
+    [
+      "1D",
+      "1E",
+      "New"
+    ],
+    [
+      "1D",
+      "supp",
+      "Known"
+    ],
+    [
+      "1E",
+      "1F"
+    ],
+    [
+      "1F",
+      "fail",
+      "Fail"
+    ],
+    [
+      "1F",
+      "1G"
+    ],
+    [
+      "1F",
+      "1H"
+    ],
+    [
+      "1F",
+      "hold"
+    ],
+    [
+      "1G",
+      "2A"
+    ],
+    [
+      "1H",
+      "2A"
+    ],
+    [
+      "2A",
+      "2B"
+    ],
+    [
+      "2B",
+      "2C"
+    ],
+    [
+      "2C",
+      "2D",
+      "Yes"
+    ],
+    [
+      "2C",
+      "nocontact",
+      "No"
+    ],
+    [
+      "2D",
+      "2E",
+      "No"
+    ],
+    [
+      "2D",
+      "incrm",
+      "Yes"
+    ],
+    [
+      "2E",
+      "2F"
+    ],
+    [
+      "2F",
+      "2G",
+      "Yes"
+    ],
+    [
+      "2F",
+      "li",
+      "No"
+    ],
+    [
+      "2G",
+      "2H"
+    ],
+    [
+      "2G",
+      "2I"
+    ],
+    [
+      "2H",
+      "3A"
+    ],
+    [
+      "2I",
+      "3A"
+    ],
+    [
+      "3A",
+      "3B"
+    ],
+    [
+      "3B",
+      "3C",
+      "Yes"
+    ],
+    [
+      "3B",
+      "noreply",
+      "No"
+    ],
+    [
+      "3C",
+      "o1"
+    ],
+    [
+      "3C",
+      "o2"
+    ],
+    [
+      "3C",
+      "o3"
+    ],
+    [
+      "3C",
+      "o4"
+    ],
+    [
+      "3C",
+      "o5"
+    ],
+    [
+      "o1",
+      "a1"
+    ],
+    [
+      "o2",
+      "a2"
+    ],
+    [
+      "o3",
+      "a3"
+    ],
+    [
+      "o4",
+      "a4"
+    ],
+    [
+      "o5",
+      "a5"
+    ],
+    [
+      "a1",
+      "3D"
+    ],
+    [
+      "a2",
+      "3D"
+    ],
+    [
+      "a3",
+      "3D"
+    ],
+    [
+      "3D",
+      "3E"
+    ]
+  ],
+  "loop": {
+    "from": "3E",
+    "to": "1A",
+    "label": "Weekly loop: results update the Context OS"
+  }
+}

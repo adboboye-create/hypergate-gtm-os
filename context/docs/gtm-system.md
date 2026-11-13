@@ -13,6 +13,8 @@ Version 1, 2026-11-13. Built on [icp.md](../icp/icp.md) and [personas.md](../icp
 
 ## Overview
 
+Flow chart on Miro: [[Hypergate] GTM System](https://miro.com/app/board/uXjVEOOe6oQ=/). Spec and SVG: [diagrams/hypergate-gtm-system.json](../../diagrams/hypergate-gtm-system.json), [diagrams/hypergate-gtm-system.svg](../../diagrams/hypergate-gtm-system.svg).
+
 ```
 0 Context OS ─► 1 Signals ─► 2 Find companies ─► 3 Enrich ─► 4 ICP fit check
                                                                    │

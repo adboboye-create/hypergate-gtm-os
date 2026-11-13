@@ -35,6 +35,9 @@ Root files: `CLAUDE.md` (this file), `README.md` (what the repo is), `.gitignore
   - `context/docs/compliance-cold-outreach.md`: research brief for legal on cold email and LinkedIn rules by country (not legal advice).
 - `context/docs/research/`: raw research and source material with links. Read when you need to verify or cite a fact.
   - `company.md`, `customers.md`, `competitors.md`, `market.md`, `signals.md`, `voice.md`.
+- `diagrams/`: flow chart specs and their rendered SVGs, built with `/miro-gtm-flowchart`.
+  - `diagrams/hypergate-gtm-system.json`: spec of the outbound GTM system in `context/docs/gtm-system.md` (3 rows, 39 boxes).
+  - `diagrams/hypergate-gtm-system.svg`: the laid-out chart, sent to the Miro board "[Hypergate] GTM System": https://miro.com/app/board/uXjVEOOe6oQ=/
 - `knowledge-base/playbooks/`: step by step how-tos for repeatable motions, from the starter kit. Read before running a known motion.
   - `copy-frameworks.md`, `copy-iron-laws.md`, `copy-bans.yaml`, `linkedin-dm-frameworks.md`: copy rules and frameworks.
   - `signal-matrix-framework.md`, `workflow-anatomy.md`: targeting and workflow method.
