@@ -13,7 +13,7 @@ Hypergate (https://hypergate.com) sells Kerberos single sign-on and on-prem file
 
 ## How this folder works
 
-Root files: `CLAUDE.md` (this file), `README.md` (what the repo is), `.gitignore`, `.env` (secrets, empty, never committed). Local only and ignored by Git: `.claude/settings.local.json`, `.treg/`.
+Root files: `CLAUDE.md` (this file), `README.md` (what the repo is), `.gitignore`, `.env` (secrets, empty, never committed), `.mcp.json` (project MCP servers: Notion). Local only and ignored by Git: `.claude/settings.local.json`, `.treg/`.
 
 - `.claude/skills/`: reusable Claude skills for repeat GTM tasks, one folder per skill (see Skills below). Read when a task matches a skill.
 - `context/icp/`: ideal customer profiles and buyer personas. Read before any targeting, list building or copy.
@@ -75,5 +75,6 @@ From `bolaji-ships/gtm-starter-kit`. Method docs they read live in `knowledge-ba
 ## Tools
 
 - GTM stack: to confirm with the team.
+- Notion: read-only mirror of `context/` and `output/` (research excluded) at "[Hypergate] GTM OS": https://app.notion.com/p/4171b751cd34815fbd5fdc942beddaf4 (private page, mirrored 2026-11-13). GitHub stays the source of truth; re-sync after changes. Connected through the project `notion` MCP in `.mcp.json`.
 - `tools/rex/`: unofficial Python SDK for working inside Clay with your own browser session. Start with `GETTING_STARTED.md`.
 - `tools/crawl4ai/`, `tools/agent-browser/`: install guides; both are installed separately.
