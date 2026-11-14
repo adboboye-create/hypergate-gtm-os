@@ -70,7 +70,7 @@ Root files: `CLAUDE.md` (this file), `README.md` (what the repo is), `.gitignore
 From `bolaji-ships/gtm-starter-kit`. Method docs they read live in `knowledge-base/playbooks/`.
 
 - Research to copy, in order: `/campaign-strategy`, `/signal-matrix`, `/build-workflow-spec`, `/campaign-copy`. Draw the system with `/miro-gtm-flowchart`.
-- Clay builds (use `tools/rex`): `/build-clay`, `/prompt-builder`, then `/campaign-contract`, `/design-clay-table-json`, `/import-clay-table`, `/save-clay-schema`.
+- Clay builds (use `tools/rex`): `/clay-build-plan` (step-by-step build guide and flow diagram from a workflow spec, no Clay access), `/build-clay`, `/prompt-builder`, then `/campaign-contract`, `/design-clay-table-json`, `/import-clay-table`, `/save-clay-schema`.
 - Clay costs and data: `/calculate-costs`, `/workspace-cost-audit`, `/export-tables`. Pre-launch check: `/campaign-qa`.
 - Research and deliverability: `/crawl4ai`, `/agent-browser`, `/inbox-placement-test`.
 
