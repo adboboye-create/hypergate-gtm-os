@@ -55,7 +55,7 @@ Root files: `CLAUDE.md` (this file), `README.md` (what the repo is), `.gitignore
 - `weekly-priorities/`: one file per ISO week (YYYY-Www.md) with the week's goals. Read at the start of every session.
   - `2026-W46.md`.
 - `work-log/`: one file per ISO week, matching the priorities file, with timestamped entries. Write to it after every change.
-  - `2026-W46.md`.
+  - `2026-W46.md`, `2026-W47.md`.
 
 ## Rules
 
