@@ -1,0 +1,157 @@
+{
+  "title": "How the Intune migration workflow moves through Clay",
+  "subtitle": "Each row is a table. Follow the numbers left to right. Paid steps only run on rows that passed every step before them. Nothing is sent until legal, partner and facts sign-off.",
+  "lanes": [
+    {
+      "id": "excl",
+      "name": "Exclusions",
+      "note": "you upload it",
+      "dashed": true
+    },
+    {
+      "id": "pull",
+      "name": "TheirStack Pull",
+      "note": "one row per\nweekly pull",
+      "dashed": true
+    },
+    {
+      "id": "jobs",
+      "name": "Jobs",
+      "note": "one row per\njob post"
+    },
+    {
+      "id": "co",
+      "name": "Companies",
+      "note": "one row per company"
+    },
+    {
+      "id": "ppl",
+      "name": "People",
+      "note": "one row per contact.\nThe main table.",
+      "main": true
+    }
+  ],
+  "steps": [
+    {
+      "id": "x",
+      "n": "0",
+      "lane": "excl",
+      "col": 4,
+      "title": "Never contact",
+      "text": "Customers, partners, agencies, open deals (by domain)",
+      "cost": null
+    },
+    {
+      "id": "s1",
+      "n": "1",
+      "lane": "pull",
+      "col": 1,
+      "title": "Pull Intune job posts",
+      "text": "TheirStack API: 'intune', last 30 days, GB FR US CA CH",
+      "cost": "paid"
+    },
+    {
+      "id": "s2",
+      "n": "2",
+      "lane": "jobs",
+      "col": 2,
+      "title": "Read each post",
+      "text": "Regex: migration to Intune? not iOS-only? old EMM? file shares?",
+      "cost": "free"
+    },
+    {
+      "id": "s3",
+      "n": "3",
+      "lane": "co",
+      "col": 3,
+      "title": "Send each company once",
+      "text": "Deduped on domain, with the post's signals",
+      "cost": "free"
+    },
+    {
+      "id": "s4",
+      "n": "4",
+      "lane": "co",
+      "col": 4,
+      "title": "Enrich and gate company",
+      "text": "250+ staff, HQ market, industry, not agency, not excluded",
+      "cost": "paid"
+    },
+    {
+      "id": "s5",
+      "n": "5",
+      "lane": "ppl",
+      "col": 5,
+      "title": "Find new joiners",
+      "text": "EUC, mobility, endpoint titles; joined in the last 6 months",
+      "cost": "free"
+    },
+    {
+      "id": "s6",
+      "n": "6",
+      "lane": "ppl",
+      "col": 6,
+      "title": "Check the person",
+      "text": "Title and date gates, 2 per company, no internal move",
+      "cost": "paid"
+    },
+    {
+      "id": "s7",
+      "n": "7",
+      "lane": "ppl",
+      "col": 7,
+      "title": "Route to a cell",
+      "text": "Old EMM = cell A to E. Ready to Contact?",
+      "cost": "free",
+      "highlight": true
+    },
+    {
+      "id": "s8",
+      "n": "8",
+      "lane": "ppl",
+      "col": 8,
+      "title": "Email and copy",
+      "text": "Verified email (not Canada), copy lines, paused sequencer",
+      "cost": "paid"
+    }
+  ],
+  "arrows": [
+    {
+      "from": "s1",
+      "to": "s2",
+      "label": "one row\nper job"
+    },
+    {
+      "from": "s2",
+      "to": "s3",
+      "label": "passing posts only"
+    },
+    {
+      "from": "s3",
+      "to": "s4"
+    },
+    {
+      "from": "x",
+      "to": "s4",
+      "label": "checked against",
+      "dashed": true
+    },
+    {
+      "from": "s4",
+      "to": "s5",
+      "label": "passing companies\nview"
+    },
+    {
+      "from": "s5",
+      "to": "s6"
+    },
+    {
+      "from": "s6",
+      "to": "s7"
+    },
+    {
+      "from": "s7",
+      "to": "s8"
+    }
+  ]
+}
