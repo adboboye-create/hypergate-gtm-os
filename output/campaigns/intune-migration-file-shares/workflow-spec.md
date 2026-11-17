@@ -32,7 +32,7 @@ Built with `/build-workflow-spec` from idea #1 in [campaign-strategy.md](../camp
 | Industries | Banking (S1), police (S2), government administration (S3), utilities and critical infrastructure (S4), insurance, law firms | [icp.md §1](../../../context/icp/icp.md); [signal-matrix.md 1a](../../../context/icp/signal-matrix.md) |
 | Size | 250+ employees. INFERRED working floor: the ICP has no minimum (icp.md open question 1) and the smallest known customer has about 240 to 306 staff | [icp.md §1](../../../context/icp/icp.md) |
 | Trigger | Job post, last 30 days, description matches the Intune migration pattern (signal T1) | Section 4 |
-| Recipient | Champion: head or lead of EUC, endpoint, mobility, workplace or client engineering. Fallback: IT infrastructure manager. Max 2 contacts per account | [personas.md](../../../context/icp/personas.md) |
+| Recipient | Champion: head or lead of EUC, endpoint, mobility, workplace or client engineering. Fallback: IT infrastructure manager. Max 2 contacts per account. Exact titles to target and exclude: see "Contact job titles" below | [personas.md](../../../context/icp/personas.md) |
 
 ### Exclude
 
@@ -45,6 +45,41 @@ Built with `/build-workflow-spec` from idea #1 in [campaign-strategy.md](../camp
 | iOS-only fleets: post mentions iOS or iPhone and never mentions Android (signal G3) | Apple ships Kerberos SSO for free; weak fit ([icp.md Not a fit](../../../context/icp/icp.md)) |
 | HQ in DE, AT, IT or any EU country not cleared | Opt-in markets. Route to the partner or the no-pitch LinkedIn path, not this email workflow ([compliance-cold-outreach.md §12.4](../../../context/docs/compliance-cold-outreach.md)) |
 | Accounts contacted in the last 90 days by any Hypergate workflow | Suppression window |
+
+### Contact job titles (added 2026-11-17)
+
+These are the people to find at each account (Clay Find People), not the job post. The post's own title is `{{job_title}}` (signal C2). Matching is case-insensitive on the current title. Pick at most 2 contacts per account, Priority 1 first, then Priority 2 only if Priority 1 finds fewer than 2.
+
+**New joiners only (added 2026-11-17, user decision).** Every contact, Priority 1 and Priority 2, must have joined the account's company in the last 180 days: company start date on or after today minus 180 days. Read it from the start date of the current position in Clay Find People (Clay's "max months in current role" filter set to 6, as in [signal-matrix.md U6](../../../context/icp/signal-matrix.md)), then check it with a formula on the start date. Caveats:
+- "Months in current role" can reset on an internal move. If the profile shows an earlier role at the same company, the person did not just join: exclude them.
+- Start dates are month-level and can lag ([signal-matrix.md U6](../../../context/icp/signal-matrix.md)). Missing start date → exclude, never assume.
+- This rule is the user's choice, not a sourced finding. There is no evidence yet that new joiners convert better ([signal-matrix.md U6](../../../context/icp/signal-matrix.md): "no evidence it triggers purchases"). It will also leave more accounts with no contact; those go to Hold.
+
+**Target**
+
+| Priority | Titles (any seniority from senior engineer up to head of) | Why | Source |
+|---|---|---|---|
+| 1. Champion | EUC / End User Computing (engineer, lead, manager, head) | Owns the device fleet and the EMM move | [gtm-system.md §6](../../../context/docs/gtm-system.md); [personas.md §1](../../../context/icp/personas.md) |
+| 1. Champion | Mobility / Enterprise Mobility / Mobile Device Management / MDM / EMM (engineer, lead, manager) | Same | [gtm-system.md §6](../../../context/docs/gtm-system.md); [personas.md §1](../../../context/icp/personas.md) |
+| 1. Champion | Endpoint (engineer, engineering lead, manager, head of endpoint management) | Same; matches the job-post titles in signal U1 | [signal-matrix.md U1](../../../context/icp/signal-matrix.md) |
+| 1. Champion | Client Engineering / Client Platform (engineer, lead, manager) | Same | [signal-matrix.md U1](../../../context/icp/signal-matrix.md) |
+| 1. Champion | Intune Engineer / Intune Administrator; Modern Workplace or Digital Workplace (engineer, lead, manager) | Run the Intune side of the move | INFERRED: no source names these titles |
+| 1. Champion | Security Administrator, only where the profile mentions mobile, MDM or EMM | The York Regional Police contact held this title | [personas.md §1](../../../context/icp/personas.md) (CU §3.3) |
+| 2. Fallback | IT Infrastructure Manager / Head of IT Infrastructure; File Services, Storage or Windows Server (lead, manager) | Owns the SMB shares that Files connects to; gtm-system adds "file services / infrastructure" for the Files-led route | [gtm-system.md §6](../../../context/docs/gtm-system.md) (W1 route tweak) |
+
+**Exclude** (drop the contact even if a target word also matches)
+
+| Exclude titles containing | Why | Source |
+|---|---|---|
+| Intern, student, apprentice, trainee, graduate, working student | Not a decision maker or owner | INFERRED |
+| Recruiter, talent, HR, people partner | Posted the job; not running the migration | INFERRED (same reason as the agency exclusion above) |
+| Sales, account executive, account manager, business development, presales, marketing | Not the buyer persona | INFERRED |
+| Help desk, service desk, desktop support, 1st line, 2nd line, support technician | Supports users; does not own the EMM or the shares | INFERRED |
+| Freelance, contractor, interim, consultant (when the employer is an agency or MSP) | Not the organisation doing the migration | INFERRED (same reason as the agency exclusion above) |
+| CIO, CTO, CISO, IT Director, VP IT | Economic buyer is unconfirmed; gtm-system says not to email the economic buyer alone, and this workflow sends to the champion only | [gtm-system.md §6](../../../context/docs/gtm-system.md); [personas.md §2](../../../context/icp/personas.md) |
+| Former, ex-, retired, or a current role that started at a different company than the account | No longer at the account | [gtm-system.md §6](../../../context/docs/gtm-system.md) ("Is the person still in the role?") |
+
+No Priority 1 or Priority 2 contact who joined in the last 180 days → the account goes to Hold, per [gtm-system.md §6](../../../context/docs/gtm-system.md). Never fall back to an excluded title, or to someone who joined more than 180 days ago, to fill the 2 slots.
 
 ## 3. Sources [ENGINE]
 
