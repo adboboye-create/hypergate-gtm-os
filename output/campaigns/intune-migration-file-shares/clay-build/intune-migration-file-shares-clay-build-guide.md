@@ -193,7 +193,9 @@ Create a spreadsheet with **3 columns** and save it as `exclusions.csv`. Rows be
 2. Upload `exclusions.csv`. Name the table `Exclusions`.
 3. Change the `Domain` column's type to **URL** (column header → Edit column → Data type).
 
-**Check:** 37 rows, 3 columns. 28 rows have a domain, 9 don't.
+**Check:** 37 rows, 6 columns. 28 rows have a domain, 9 don't.
+
+> The ready-made file is `exclusions.csv` in this folder. It has 3 extra columns for people, not for Clay: `Confidence` (Confirmed / Likely / Unknown that the row belongs on the list), `Source` and `Notes`. Clay only matches on `Domain` and reads `Type`, so the extra columns do no harm. Keep a row even when its confidence is Likely or Unknown: wrongly skipping a customer is worse than wrongly skipping a prospect.
 **Cost:** free.
 
 ---
