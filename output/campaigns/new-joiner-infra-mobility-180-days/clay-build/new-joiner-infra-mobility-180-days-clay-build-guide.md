@@ -4,7 +4,7 @@ A step-by-step guide to building [`workflow-spec.md`](../workflow-spec.md) in Cl
 
 > **Don't skip the checks.** The most common Clay mistake is running a paid column on every row before checking it on one. Every step below ends with a check. If a check fails, fix it before moving on.
 
-> **This build already exists** in Clay (workspace 1206365, workbook `Hypergate-Intune Users (180 days)`, links in [`../../intune-migration-file-shares/clay-build/README.md`](../../intune-migration-file-shares/clay-build/README.md)). It was brought in line with the spec on 2026-11-20. The column names below are the real ones in that workbook, so you can use this guide to rebuild it, audit it, or extend it.
+> **This build already exists** in Clay (workspace 1206365, workbook `Hypergate · New joiner infra and mobility (180 days)`, links and results in [README.md](README.md)). It was brought in line with the spec on 2026-11-20. The column names below are the real ones in that workbook, so you can use this guide to rebuild it, audit it, or extend it.
 
 > **Nothing sends yet.** The spec's status line says no sends until legal signs off the compliance brief, Hypergate sales answers the partner-region memo, Hypergate approves `facts.md`, and the 9 customer domains in the Exclusions table are filled. Copy is still pending (`/campaign-copy` hasn't run), so this guide has no copy-line formulas yet.
 
@@ -97,7 +97,7 @@ What a finished row in **People** looks like, reading left to right (made-up val
 **Why:** one place for everything in this campaign.
 
 1. In Clay, click **+ New** (top left) → **Workbook**.
-2. Name it `Hypergate · New joiner infra and mobility (180 days)`. The existing workbook is called `Hypergate-Intune Users (180 days)`; renaming it is free and recommended, because this play has no Intune signal.
+2. Name it `Hypergate · New joiner infra and mobility (180 days)` (the existing workbook was renamed to this on 2026-11-20; it was first called `Hypergate-Intune Users (180 days)`).
 3. In the description, paste: *"Signal: people new in role (6 months) as infrastructure or enterprise architects, systems engineers or mobility managers at regulated organisations, 201 to 5,000 staff. Spec: hypergate-gtm-os/output/campaigns/new-joiner-infra-mobility-180-days/workflow-spec.md. No sends until legal, partner-region and facts.md sign-off."*
 
 **Check:** the workbook shows in your Clay home with that name.
@@ -147,7 +147,7 @@ Write down the total above the preview. Spec section 7: compare it with last mon
 ### 2.3 Import
 
 1. Set the import limit to **25** (test size).
-2. Click **Import**. The existing table is named after the search: `Enterprise Architects, DACH, Regulated Industries`. This guide calls it **People**.
+2. Click **Import**. Name the table `People` (the existing table was renamed from `Enterprise Architects, DACH, Regulated Industries` on 2026-11-20). Name the search source column `People Search (new in role, 6 months)`.
 3. **Turn Auto-run OFF** before adding any column.
 
 ### 2.4 Pull the fields out of the search result
@@ -168,7 +168,7 @@ The search result sits in one source column. Make these formula columns from it 
 | `Domain` | The current company's website domain | `{{Search}}?.matched_experience?.company?.domain` |
 | `Start Date` | Start month (YYYY-MM) of the current job | `{{Search}}?.matched_experience?.start_date` |
 
-(`{{Search}}` is the source column, named after the search. Type `/` to pick it.)
+(`{{Search}}` is the source column, `People Search (new in role, 6 months)`. Type `/` to pick it.)
 
 > **No headline.** The search result has no headline field. The spec's AI column was changed on 2026-11-20 to read the job title, company industry and company description instead.
 
@@ -212,12 +212,12 @@ Table settings → **Deduplicate** → `LinkedIn Profile`.
 
 ### 3.2 Check against the Exclusion & Block list
 
-1. **+ Add column** → **Lookup single row in other table** → table `Exclusion & Block list`, match column `Domain`, value `{{Domain}}`. It keeps Clay's default name, `Look up single row in other table`.
+1. **+ Add column** → **Lookup single row in other table** → table `Exclusion & Block list`, match column `Domain`, value `{{Domain}}`. Name it `Exclusion Lookup`.
 2. **Run condition:** `!!{{Domain}}`
 3. Run it on all rows (lookups are free).
 4. Formula `G4 Not Excluded?`. Plain English: *"True if Domain is not empty and the lookup found no row in the Exclusion & Block list."*
 ```javascript
-!!{{Domain}} && !{{Look up single row in other table}}?.record
+!!{{Domain}} && !{{Exclusion Lookup}}?.record
 ```
 
 > The spec's G4 also includes "not contacted by any Hypergate workflow in the last 90 days". There's no last-contacted data yet; see [Things the spec needs to fix](#things-the-spec-needs-to-fix) 4.
@@ -234,7 +234,7 @@ Table settings → **Deduplicate** → `LinkedIn Profile`.
 ### 4.1 Create it and send companies over
 
 1. **+ Add table** → **Blank table**. Name it `Companies`. Auto-run **off**. Deduplicate on `Company Domain` once that column exists (step 4).
-2. In People: **+ Add column** → **Send table data** → destination `Companies`. Send the person's columns (Clay's "Rows from" source column carries them).
+2. In People: **+ Add column** → **Send table data** → destination `Companies`. Name it `Send to Companies`. Send the person's columns (Clay's "Rows from" source column carries them).
 3. **Run condition:** `{{G4 Not Excluded?}} === true && {{G5 Not Junior?}} === true`. Spec section 3: excluded and junior people never reach Companies, so their companies are never enriched. (Added to the existing build on 2026-11-20.)
 4. In Companies, add two formulas from the incoming row:
 
@@ -291,7 +291,7 @@ Table settings → **Deduplicate** → `LinkedIn Profile`.
 **Check:** on the first pull all 70 companies passed G1, G2 and G6 (the search already filters size and industry), and 12 were public sector. Read 3 rows by eye.
 **Cost:** free.
 
-> The old `ICP Pass` columns in both tables are left over from the first build and no longer drive anything. Delete them or leave them; see [Things the spec needs to fix](#things-the-spec-needs-to-fix) 6.
+> The old ICP Pass columns in both tables (now named `(unused) old ICP Pass`) are left over from the first build and no longer drive anything. Delete them or leave them; see [Things the spec needs to fix](#things-the-spec-needs-to-fix) 6.
 
 ---
 
@@ -299,17 +299,17 @@ Table settings → **Deduplicate** → `LinkedIn Profile`.
 
 In People:
 
-1. **+ Add column** → **Lookup single row in other table** → table `Companies`, match column `Company Domain`, value `{{Domain}}`. Clay names it `Look up single row in other table (2)`.
+1. **+ Add column** → **Lookup single row in other table** → table `Companies`, match column `Company Domain`, value `{{Domain}}`. Name it `Company Lookup`.
 2. Run it on all rows (free). When you add columns to Companies later, re-run this lookup with **force re-run**, or it keeps the old snapshot.
 3. Formulas:
 
 | Column | Plain English | Formula |
 |---|---|---|
-| `Company Gates Pass` | True if the company row has Company Gates Pass true (size, industry, not an agency) | `{{Look up single row in other table (2)}}?.record?.["Company Gates Pass?"] === true` |
-| `Public Sector` | True if the company row is public sector (held from email) | `{{Look up single row in other table (2)}}?.record?.["G7 Public Sector?"] === true` |
-| `Segment` | The C1 segment from the company row | `{{Look up single row in other table (2)}}?.record?.["C1 Segment"] \|\| ""` |
-| `Company Industry` | The industry from the company row | `{{Look up single row in other table (2)}}?.record?.["Industry"] \|\| ""` |
-| `Company Description` | The company description from the company row | `{{Look up single row in other table (2)}}?.record?.["Description"] \|\| ""` |
+| `Company Gates Pass` | True if the company row has Company Gates Pass true (size, industry, not an agency) | `{{Company Lookup}}?.record?.["Company Gates Pass?"] === true` |
+| `Public Sector` | True if the company row is public sector (held from email) | `{{Company Lookup}}?.record?.["G7 Public Sector?"] === true` |
+| `Segment` | The C1 segment from the company row | `{{Company Lookup}}?.record?.["C1 Segment"] \|\| ""` |
+| `Company Industry` | The industry from the company row | `{{Company Lookup}}?.record?.["Industry"] \|\| ""` |
+| `Company Description` | The company description from the company row | `{{Company Lookup}}?.record?.["Description"] \|\| ""` |
 
 ### 5.1 `A1 Eligible?` (the AI column's run condition)
 
@@ -398,12 +398,12 @@ In People:
 
 ### 7.3 Back in People: was I picked?
 
-1. Force re-run `Look up single row in other table (2)` so it carries `Chosen Contacts`.
+1. Force re-run `Company Lookup` so it carries `Chosen Contacts`.
 2. Formulas:
 
 | Column | Plain English | Formula |
 |---|---|---|
-| `Chosen Contacts` | Chosen Contacts from the company row | `{{Look up single row in other table (2)}}?.record?.["Chosen Contacts"] \|\| ""` |
+| `Chosen Contacts` | Chosen Contacts from the company row | `{{Company Lookup}}?.record?.["Chosen Contacts"] \|\| ""` |
 | `G8 Picked?` | True if LinkedIn Profile is one of the 2 people listed in Chosen Contacts | `!!{{LinkedIn Profile}} && ({{Chosen Contacts}} \|\| "").split(" ").includes({{LinkedIn Profile}})` |
 
 **Check:** no company has more than 2 people with `G8 Picked?` true. On the first pull, one company had 3 candidates and the third was dropped.
@@ -444,8 +444,8 @@ All in People, all free.
 
 ### 9.1 The waterfall
 
-1. **+ Add column** → **Find work email** (Clay's waterfall). Inputs: full name, `{{Domain}}`, `{{LinkedIn Profile}}`.
-2. Providers, in this order (as built): Icypeas → Kitt → Enrow → LeadMagic → Findymail. Each is validated by a Findymail validation step. Validation strategy: **conservative**, no catch-all.
+1. **+ Add column** → **Find Email 2 (Kitt)** (Clay's waterfall). Inputs: full name, `{{Domain}}`, `{{LinkedIn Profile}}`.
+2. Providers, in this order (as built): `Find Email 1 (Icypeas)` → `Find Email 2 (Kitt)` → `Find Email 3 (Enrow)` → `Find Email 4 (LeadMagic)` → `Find Email 5 (Findymail)`, each followed by `Verify N (Findymail)`. Validation strategy: **conservative**, no catch-all.
 3. **Run condition** on the first find step (Clay copies it into the later steps): `{{Ready to Contact?}} === true && {{G3 Market}} === "email"`
 4. Run on **1 row**, read the result, then the rest of the eligible rows.
 5. The waterfall writes the verified email into `Work Email`.
@@ -453,9 +453,9 @@ All in People, all free.
 ### 9.2 Provenance and safety columns
 
 #### `Email Source` (which provider found it)
-- **Plain English:** *"Which provider found Work Email: Icypeas (Find Work Email), Kitt (Find work email), Enrow (Find Work Email (2), stored under result), LeadMagic (Find work email (2)) or Findymail (Find Work Email (4)); blank if no email."*
+- **Plain English:** *"Which provider found Work Email: Icypeas (Find Email 1 (Icypeas)), Kitt (Find Email 2 (Kitt)), Enrow (Find Email 3 (Enrow), stored under result), LeadMagic (Find Email 4 (LeadMagic)) or Findymail (Find Email 5 (Findymail)); blank if no email."*
 ```javascript
-!{{Work Email}} ? "" : ({{Find Work Email}}?.email === {{Work Email}}) ? "Icypeas" : ({{Find work email}}?.email === {{Work Email}}) ? "Kitt" : ({{Find Work Email (2)}}?.result?.email === {{Work Email}}) ? "Enrow" : ({{Find work email (2)}}?.email === {{Work Email}}) ? "LeadMagic" : ({{Find Work Email (4)}}?.email === {{Work Email}}) ? "Findymail" : "unknown"
+!{{Work Email}} ? "" : ({{Find Email 1 (Icypeas)}}?.email === {{Work Email}}) ? "Icypeas" : ({{Find Email 2 (Kitt)}}?.email === {{Work Email}}) ? "Kitt" : ({{Find Email 3 (Enrow)}}?.result?.email === {{Work Email}}) ? "Enrow" : ({{Find Email 4 (LeadMagic)}}?.email === {{Work Email}}) ? "LeadMagic" : ({{Find Email 5 (Findymail)}}?.email === {{Work Email}}) ? "Findymail" : "unknown"
 ```
 > Enrow keeps the email under `result.email`, not `email`. That's why the first version of this formula returned "unknown" for 8 rows.
 
@@ -558,6 +558,7 @@ Watch the credits counter before and after each paid step and write the numbers 
 
 - **2026-11-19:** the first build ran the people search (77 people), Send table data, Enrich company (70 companies, 70 credits) and the email waterfall (72 rows, 152 net credits, 57 emails) **with auto-run on and before run conditions existed** on Enrich company and the waterfall. There was no recorded 1-row proof for those steps. The waterfall ran on Germany and Canada too (8 and 10 emails); those rows are now held or LinkedIn-only and never reach `Ready for Email?`.
 - **2026-11-20:** auto-run turned off on all 3 tables; run conditions added to Enrich company and the waterfall; every formula, gate, view and group above added; the AI column proven on 3 rows, then run on the rest (8.4 credits including 2 re-runs after a prompt fix and 1 row unlocked by the intern fix). From now on, every paid step follows the 1-row rule (3 rows for AI).
+- **2026-11-20, re-proof:** Enrich company force re-run on 1 company (SUCCESS, same size, industry and country, 1 credit). Email waterfall force re-run on 1 contact: Icypeas found the same email and Findymail validated it (0.5 + 1 credits); that row's `Email Found On` was reset to the re-run date. Both paid steps are now proven on 1 row with their current run conditions.
 
 ---
 
@@ -587,7 +588,7 @@ Watch the credits counter before and after each paid step and write the numbers 
 | AI cells show "Model does not support Use AI" | The model ID isn't available for Use AI | Switch the model (GPT-4.1 Mini works); failed cells are refunded |
 | `Role Focus` is blank on eligible rows | The AI column wasn't run, or the extractor points at the wrong field | Run A1 on 1 row; check `?.role_focus` |
 | `Email Source` says "unknown" | A provider stores the email in a different field (Enrow uses `result.email`) | Open the provider cell, find the email field, update the formula |
-| New Companies columns don't show in People | The lookup keeps its old snapshot | Force re-run `Look up single row in other table (2)` |
+| New Companies columns don't show in People | The lookup keeps its old snapshot | Force re-run `Company Lookup` |
 | "International ..." or "Internal ..." titles are flagged junior | An old `Assistant or Intern` formula matches "intern" inside words | Use the whole-word formula in Part 3 |
 | Lookup finds nothing | Domains written differently (`www.`, `https://`) | Compare side by side; type domains plain |
 | Formula shows an error | A column name changed, or a value is blank | Re-pick the column with `/`; guard blanks with `\|\| ""` |
@@ -603,6 +604,6 @@ Found while writing this guide. Update [`workflow-spec.md`](../workflow-spec.md)
 3. **Section 3, Send table data:** the existing build sent everyone to Companies. Fixed in Clay on 2026-11-20 (run condition in Part 4.1); no spec change needed.
 4. **Section 4, G4 90-day rule:** nothing records "last contacted" yet. Add `Last Contacted At` when the sequencer is connected (Part 12), and replace it with the Zoho CRM check later.
 5. **Section 4, E1 provenance:** `Email Found On` can't be set by a formula. Write into the spec that it's filled on each waterfall run (by hand or by `tools/rex`), or the 30-day notice clock (G7-C3) can't be checked.
-6. **Leftover columns:** the old `ICP Pass` columns (People and Companies) and the 6 disabled waterfall steps (Hunter, Prospeo, Datagma, Wiza, SMARTe, Dropcontact, run condition `false`) do nothing. Remove them, or note them as inactive.
-7. **Column names:** the validation steps are named after the finders they check ("Validate Icypeas") but all run Findymail's validator. Rename them (for example "Validate (Findymail) after Icypeas") so cost reviews aren't confusing.
+6. **Leftover columns:** the old ICP Pass columns and the 6 disabled waterfall steps (Hunter, Prospeo, Datagma, Wiza, SMARTe, Dropcontact, run condition `false`) do nothing. Renamed with an `(unused)` prefix on 2026-11-20; delete them if you prefer.
+7. **Column names:** done on 2026-11-20. Each waterfall step is now named by position and provider (`Find Email 1 (Icypeas)`, `Verify 1 (Findymail)` and so on), the lookups are `Exclusion Lookup` and `Company Lookup`, and Send table data is `Send to Companies`.
 8. **Section 2, search changes:** law industries, France and the US are in the spec but not yet in the live search. Re-run the search with them (free) and import into the same table.
