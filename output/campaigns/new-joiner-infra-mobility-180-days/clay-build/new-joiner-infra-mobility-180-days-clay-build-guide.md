@@ -189,14 +189,14 @@ Table settings → **Deduplicate** → `LinkedIn Profile`.
 
 | Column | Plain English | Formula |
 |---|---|---|
-| `Assistant or Intern` | True if the job title contains assistant or intern | `{{Job Title}}?.toLowerCase()?.includes("assistant") \|\| {{Job Title}}?.toLowerCase()?.includes("intern")` |
+| `Assistant or Intern` | True if Job Title contains the whole word assistant or intern (not words like International or Internal) | `/\b(assistant\|intern)\b/i.test({{Job Title}} \|\| "")` |
 | `T1 New in Role?` | True if Start Date is not empty and its year-month is the same as or later than the year-month 180 days ago | `!!{{Start Date}} && String({{Start Date}}).slice(0, 7) >= new Date(Date.now() - 180 * 86400000).toISOString().slice(0, 7)` |
 | `G3 Market` | Market from the person's Country: United Kingdom, Switzerland, France, United States = email; Canada = linkedin_only; Germany, Austria = held; anything else = out | `({"united kingdom":"email","switzerland":"email","france":"email","united states":"email","canada":"linkedin_only","germany":"held","austria":"held"})[({{Country}} \|\| "").trim().toLowerCase()] \|\| "out"` |
 | `G5 Not Junior?` | True if Assistant or Intern is not true | `{{Assistant or Intern}} !== true` |
 
 > In tables, `\|` is a plain `|` (escaped only so the table displays). Type a plain `|` in Clay.
 
-> **Known flaw:** `Assistant or Intern` matches "intern" inside "International" or "Internal". See [Things the spec needs to fix](#things-the-spec-needs-to-fix) 1.
+> The first version matched "intern" inside "International" and "Internal". Fixed on 2026-11-20 with a whole-word match; it changed 1 row.
 
 ### 3.1 `R1 Role Group` (the router, spec section 4)
 
@@ -318,7 +318,7 @@ In People:
 {{T1 New in Role?}} === true && {{Company Gates Pass}} === true && {{G4 Not Excluded?}} === true && {{G5 Not Junior?}} === true && ["email","linkedin_only"].includes({{G3 Market}}) && {{R1 Role Group}} !== "dpo"
 ```
 
-**Check:** a person at a company you checked in Part 4 shows the same values. On the first pull, 39 of 77 people were `A1 Eligible?`.
+**Check:** a person at a company you checked in Part 4 shows the same values. On the first pull, 40 of 77 people were `A1 Eligible?` (after the intern fix).
 **Cost:** free.
 
 ---
@@ -363,7 +363,7 @@ In People:
 > **What `unclear` means:** held, never sent, until a person reviews the row. `not_relevant` means dropped.
 
 **Check:** filter `Role Focus` = not_relevant and read every `Role Evidence`. Would you agree? On the first run, a water and wastewater systems engineer in government was correctly dropped, and two enterprise architects at oil and gas companies were wrongly dropped until the "any industry" rule was added.
-**Cost:** **0.2 credits per row** (measured 2026-11-20). The first run: 39 rows plus 2 re-runs = 8.2 credits.
+**Cost:** **0.2 credits per row** (measured 2026-11-20). The first run: 40 rows plus 2 re-runs = 8.4 credits (the 40th row became eligible after the intern fix).
 
 ---
 
@@ -431,7 +431,7 @@ All in People, all free.
 
 > **Held rows stay false** (spec section 4): Germany and Austria (`G3 Market` = held), DPOs (`R1 Role Group` = dpo) and AI `unclear` can never be `Ready to Contact?`, because `Candidate OK?` requires an email or linkedin_only market, a mobility or infrastructure role group, and a passing `Role Focus`.
 
-**Check:** filter `Ready to Contact?` = true. No row has `G3 Market` = held, `R1 Role Group` = dpo, or `Role Focus` = unclear. On the first pull: 34 rows, all cell B (only 1 mobility person was found, and they didn't pass).
+**Check:** filter `Ready to Contact?` = true. No row has `G3 Market` = held, `R1 Role Group` = dpo, or `Role Focus` = unclear. On the first pull: 35 rows, all cell B (only 1 mobility person was found, and they didn't pass).
 **Cost:** free.
 
 ---
@@ -468,7 +468,7 @@ A plain **date** column. A formula can't read when a cell ran, so fill it on eac
 | `E1 Email Sendable?` | True if Work Email is filled (validated by the waterfall), Email Domain OK is true, and Email Source and Email Found On are filled | `!!{{Work Email}} && {{Email Domain OK?}} === true && !!{{Email Source}} && {{Email Source}} !== "unknown" && !!{{Email Found On}}` |
 | `Ready for Email?` | True if Ready to Contact is true, G3 Market is email, Public Sector is not true and E1 Email Sendable is true | `{{Ready to Contact?}} === true && {{G3 Market}} === "email" && {{Public Sector}} !== true && {{E1 Email Sendable?}} === true` |
 
-**Check:** every `Ready for Email?` row has a source, a date and a matching domain. On the first pull: 15 rows.
+**Check:** every `Ready for Email?` row has a source, a date and a matching domain. On the first pull: 16 rows.
 **Cost:** about **2.7 net credits per email found** (measured 2026-11-19: 152 net credits for 57 emails; lookups that find nothing are refunded).
 
 ---
@@ -512,7 +512,7 @@ Variables already available for copy (spec section 6): `First Name`, `Company`, 
 
 People: **Person (from search)** · **Company facts** · **Gates (free)** · **AI role check** · **Routing** · **Email checks**, with the email waterfall in its own group. Companies: **Company** · **Enrichment** · **Gates (free)** · **Contacts**. Exclusion & Block list: **Never contact**. Select columns → right-click → **Group columns** (may be called "Create group"). Don't hide paid columns or lookups: they show where data came from.
 
-**Check:** first pull: Ready to send 15, LinkedIn only 18, Review: email domain 1, Held 36, Dropped 7.
+**Check:** first pull: Ready to send 16, LinkedIn only 18, Review: email domain 1, Held 36, Dropped 6.
 **Cost:** free.
 
 ---
@@ -557,7 +557,7 @@ Watch the credits counter before and after each paid step and write the numbers 
 ## Run history (honest record)
 
 - **2026-11-19:** the first build ran the people search (77 people), Send table data, Enrich company (70 companies, 70 credits) and the email waterfall (72 rows, 152 net credits, 57 emails) **with auto-run on and before run conditions existed** on Enrich company and the waterfall. There was no recorded 1-row proof for those steps. The waterfall ran on Germany and Canada too (8 and 10 emails); those rows are now held or LinkedIn-only and never reach `Ready for Email?`.
-- **2026-11-20:** auto-run turned off on all 3 tables; run conditions added to Enrich company and the waterfall; every formula, gate, view and group above added; the AI column proven on 3 rows, then run on the rest (8.2 credits including 2 re-runs after a prompt fix). From now on, every paid step follows the 1-row rule (3 rows for AI).
+- **2026-11-20:** auto-run turned off on all 3 tables; run conditions added to Enrich company and the waterfall; every formula, gate, view and group above added; the AI column proven on 3 rows, then run on the rest (8.4 credits including 2 re-runs after a prompt fix and 1 row unlocked by the intern fix). From now on, every paid step follows the 1-row rule (3 rows for AI).
 
 ---
 
@@ -588,7 +588,7 @@ Watch the credits counter before and after each paid step and write the numbers 
 | `Role Focus` is blank on eligible rows | The AI column wasn't run, or the extractor points at the wrong field | Run A1 on 1 row; check `?.role_focus` |
 | `Email Source` says "unknown" | A provider stores the email in a different field (Enrow uses `result.email`) | Open the provider cell, find the email field, update the formula |
 | New Companies columns don't show in People | The lookup keeps its old snapshot | Force re-run `Look up single row in other table (2)` |
-| "International ..." or "Internal ..." titles are flagged junior | `Assistant or Intern` matches "intern" inside words | Use a whole-word match (spec fix 1) |
+| "International ..." or "Internal ..." titles are flagged junior | An old `Assistant or Intern` formula matches "intern" inside words | Use the whole-word formula in Part 3 |
 | Lookup finds nothing | Domains written differently (`www.`, `https://`) | Compare side by side; type domains plain |
 | Formula shows an error | A column name changed, or a value is blank | Re-pick the column with `/`; guard blanks with `\|\| ""` |
 
@@ -598,7 +598,7 @@ Watch the credits counter before and after each paid step and write the numbers 
 
 Found while writing this guide. Update [`workflow-spec.md`](../workflow-spec.md); this guide didn't edit it.
 
-1. **Section 2, title excludes / G5:** `Assistant or Intern` matches "intern" inside "International" and "Internal", so real infrastructure people can be marked junior. Use a whole-word check: `/\b(assistant|intern)\b/i.test({{Job Title}} || "")`.
+1. **Section 2, title excludes / G5:** fixed in the build on 2026-11-20 (whole-word match, Part 3). No spec change needed.
 2. **Sections 1 and 3, mobility titles:** the search found only 1 mobility person in 77, so cell A is empty. Add mobility titles to the search (EUC, End User Computing, MDM, Mobile Device Management, Endpoint, Enterprise Mobility, Intune) or accept that this play is cell B only.
 3. **Section 3, Send table data:** the existing build sent everyone to Companies. Fixed in Clay on 2026-11-20 (run condition in Part 4.1); no spec change needed.
 4. **Section 4, G4 90-day rule:** nothing records "last contacted" yet. Add `Last Contacted At` when the sequencer is connected (Part 12), and replace it with the Zoho CRM check later.
