@@ -339,7 +339,7 @@ In People:
    > *- not_relevant: the role is not corporate IT: industrial, process, control or OT systems engineering (for example plant or rig systems), software or product engineering, data protection, compliance, or anything else.*
    > *- unclear: the information is too vague to tell.*
    >
-   > *Rules: use only the information below and do not guess beyond it. An Enterprise Architect or Infrastructure Architect is infrastructure_it in any industry, including oil and gas, unless the title names identity or mobile. A Systems Engineer at an oil and gas company is not_relevant unless the title or description points to corporate IT.*
+   > *Rules: use only the information below and do not guess beyond it. An Enterprise Architect or Infrastructure Architect is infrastructure_it in any industry, including oil and gas, unless the title names identity or mobile. A Systems Engineer at an oil and gas company is not_relevant unless the title or description points to corporate IT. MDM next to data words (RDM, master data, reference data, data governance) means master data management, not mobile devices: not_relevant.*
    > *evidence: quote the exact words from the job title or company description that decided your answer, at most 20 words. Use an empty string if role_focus is unclear.*
    >
    > *Job title: {{Job Title}}*
@@ -363,7 +363,7 @@ In People:
 > **What `unclear` means:** held, never sent, until a person reviews the row. `not_relevant` means dropped.
 
 **Check:** filter `Role Focus` = not_relevant and read every `Role Evidence`. Would you agree? On the first run, a water and wastewater systems engineer in government was correctly dropped, and two enterprise architects at oil and gas companies were wrongly dropped until the "any industry" rule was added.
-**Cost:** **0.2 credits per row** (measured 2026-11-20). Spent so far: 9.8 credits for 47 rows, including 2 re-runs after the prompt fix. One answer looks wrong: "MDM & RDM Analyst" came back mobile_endpoint, though "RDM" points to master data (spec fix 9).
+**Cost:** **0.2 credits per row** (measured 2026-11-20). Spent so far: 10.0 credits for 47 rows, including 3 re-runs after prompt fixes. The master-data rule was added after "MDM & RDM Analyst" first came back mobile_endpoint; it re-ran as not_relevant.
 
 ---
 
@@ -431,7 +431,7 @@ All in People, all free.
 
 > **Held rows stay false** (spec section 4): Germany and Austria (`G3 Market` = held), DPOs (`R1 Role Group` = dpo) and AI `unclear` can never be `Ready to Contact?`, because `Candidate OK?` requires an email or linkedin_only market, a mobility or infrastructure role group, and a passing `Role Focus`.
 
-**Check:** filter `Ready to Contact?` = true. No row has `G3 Market` = held, `R1 Role Group` = dpo, or `Role Focus` = unclear. After the second pull: 42 rows, cell A 7 and cell B 35.
+**Check:** filter `Ready to Contact?` = true. No row has `G3 Market` = held, `R1 Role Group` = dpo, or `Role Focus` = unclear. After the second pull: 41 rows, cell A 6 and cell B 35.
 **Cost:** free.
 
 ---
@@ -446,7 +446,7 @@ All in People, all free.
 
 1. **+ Add column** → **Find Email 2 (Kitt)** (Clay's waterfall). Inputs: full name, `{{Domain}}`, `{{LinkedIn Profile}}`.
 2. Providers, in this order (as built): `Find Email 1 (Icypeas)` → `Find Email 2 (Kitt)` → `Find Email 3 (Enrow)` → `Find Email 4 (LeadMagic)` → `Find Email 5 (Findymail)`, each followed by `Verify N (Findymail)`. Validation strategy: **conservative**, no catch-all.
-3. **Run condition** on the first find step (Clay copies it into the later steps): `{{Ready to Contact?}} === true && {{G3 Market}} === "email"`
+3. **Run condition** on the first find step (Clay copies it into the later steps): `{{Ready to Contact?}} === true && {{G3 Market}} === "email" && {{Public Sector}} !== true`. Public-sector emails are held until legal answers, so they aren't looked up (added 2026-11-20).
 4. Run on **1 row**, read the result, then the rest of the eligible rows.
 5. The waterfall writes the verified email into `Work Email`.
 
@@ -512,7 +512,7 @@ Variables already available for copy (spec section 6): `First Name`, `Company`, 
 
 People: **Person (from search)** · **Company facts** · **Gates (free)** · **AI role check** · **Routing** · **Email checks**, with the email waterfall in its own group. Companies: **Company** · **Enrichment** · **Gates (free)** · **Contacts**. Exclusion & Block list: **Never contact**. Select columns → right-click → **Group columns** (may be called "Create group"). Don't hide paid columns or lookups: they show where data came from.
 
-**Check:** after the second pull: Ready to send 18, LinkedIn only 23, Review: email domain 1, Held 38, Dropped 7.
+**Check:** after the second pull: Ready to send 18, LinkedIn only 22, Review: email domain 1, Held 38, Dropped 8.
 **Cost:** free.
 
 ---
@@ -609,5 +609,5 @@ Found while writing this guide. Update [`workflow-spec.md`](../workflow-spec.md)
 6. **Leftover columns:** the old ICP Pass columns and the 6 disabled waterfall steps (Hunter, Prospeo, Datagma, Wiza, SMARTe, Dropcontact, run condition `false`) do nothing. Renamed with an `(unused)` prefix on 2026-11-20; delete them if you prefer.
 7. **Column names:** done on 2026-11-20. Each waterfall step is now named by position and provider (`Find Email 1 (Icypeas)`, `Verify 1 (Findymail)` and so on), the lookups are `Exclusion Lookup` and `Company Lookup`, and Send table data is `Send to Companies`.
 8. **Section 2, search changes:** law industries, France and the US are in the spec but not yet in the live search. Re-run the search with them (free) and import into the same table.
-9. **Section 4, A1 prompt:** "MDM & RDM Analyst" passed as mobile_endpoint, but MDM next to RDM means master data management. Add a rule: "MDM next to data words (RDM, master data, data governance) means master data management: not_relevant." Re-run that 1 row (0.2 credits).
-10. **Section 3, email waterfall run condition:** add "and not public sector". Public-sector emails are held until legal answers, so looking them up costs credits and starts the 30-day notice clock for nothing. In the second pull these rows were skipped by hand.
+9. **Section 4, A1 prompt:** done on 2026-11-20. Rule added (MDM next to data words = master data, not_relevant); the "MDM & RDM Analyst" row re-ran as not_relevant (0.2 credits).
+10. **Section 3, email waterfall run condition:** done on 2026-11-20 in the build and the spec ("and not public sector" on all 5 find steps).

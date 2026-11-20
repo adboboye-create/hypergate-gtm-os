@@ -31,12 +31,12 @@ Two pulls: the first (2026-11-19) with infrastructure, architect, DPO and mobili
 | Role group | infrastructure 49, DPO 26 (held), mobility 11, other 1 | Mobility went from 1 to 11 after the title change |
 | Market | email 58, LinkedIn-only 17 (Canada), held 12 (Germany, Austria) | Compliance follows the person's country |
 | Eligible for the AI role check | 47 | All free gates passed, not DPO |
-| AI answer | infrastructure_it 37, mobile_endpoint 6, not_relevant 3, unclear 1 (held) | Proven on 3 rows first in both pulls; 1 prompt fix after a spot check |
-| Candidates | 43 | |
-| **Ready to Contact?** (max 2 per company) | **42**: cell A (mobility) 7, cell B (infrastructure) 35 | 1 dropped by the 2-per-company rule |
-| **Ready for Email?** | **18** (cell B 16, cell A 2) | Of the 33 Ready to Contact in email markets: 7 public sector (email held until legal answers), 8 without a sendable email (1 email-domain mismatch in review, 1 held for a likely false positive, the rest not found or not looked up) |
-| LinkedIn only | 23 | Canada 9 plus public-sector and no-email rows |
-| Held / Dropped | 38 / 7 | Held: Germany, Austria, DPOs, AI unclear |
+| AI answer | infrastructure_it 37, mobile_endpoint 5, not_relevant 4, unclear 1 (held) | Proven on 3 rows first in both pulls; 2 prompt fixes after spot checks (architects in any industry; MDM next to data words = master data) |
+| Candidates | 42 | |
+| **Ready to Contact?** (max 2 per company) | **41**: cell A (mobility) 6, cell B (infrastructure) 35 | 1 dropped by the 2-per-company rule |
+| **Ready for Email?** | **18** (cell B 16, cell A 2) | Of the 32 Ready to Contact in email markets: 7 public sector (email held until legal answers), 7 without a sendable email (1 email-domain mismatch in review, the rest not found) |
+| LinkedIn only | 22 | Canada 9 plus public-sector and no-email rows |
+| Held / Dropped | 38 / 8 | Held: Germany, Austria, DPOs, AI unclear |
 
 ### Fill rates
 
@@ -45,7 +45,7 @@ Two pulls: the first (2026-11-19) with infrastructure, architect, DPO and mobili
 | Company enrichment | 78 of 79 (99%) |
 | Work email found | 59 of 75 rows looked up (79%) |
 | Work email found among AI-checked rows | 33 of 47 (70%) |
-| AI role check passes | 43 of 47 (91%) |
+| AI role check passes | 42 of 47 (89%) |
 | Emails found that are usable for email | 18 of 59 (31%). 18 were found in Germany and Canada on the first run, before the market gate existed, and can't be emailed |
 
 ### Cost (Clay credits)
@@ -56,18 +56,19 @@ Two pulls: the first (2026-11-19) with infrastructure, architect, DPO and mobili
 |---|---|---|
 | Enrich company | 85 (75 first run, 1 re-proof, 9 new companies) | 1 per company. About 7 credits went on duplicate companies before dedupe |
 | Email waterfall (find + Findymail verify) | about 156.5 (152 first run, 1.5 re-proof, 3 new) | about 2.7 per email found; lookups that find nothing are refunded |
-| AI role check (GPT-4.1 Mini) | 9.8 (47 rows, 2 prompt-fix re-runs, 1 row after the intern fix) | 0.2 per row |
+| AI role check (GPT-4.1 Mini) | 10.0 (47 rows, 3 prompt-fix re-runs, 1 row after the intern fix) | 0.2 per row |
 | AI on Grok 4.1 (rejected by Clay) | 0 | refunded |
 | Search, lookups, formulas, Send to Companies | 0 | free |
-| **Total** | **about 251** | **about 6.0 per Ready to Contact person, about 14 per Ready for Email person** |
+| **Total** | **about 251** | **about 6.1 per Ready to Contact person, about 14 per Ready for Email person** |
 
-The cost per contactable person is high because the first run (2026-11-19) enriched duplicate companies and found emails before the market and role gates existed: 18 emails went to people we can't email, and lookups ran on DPOs. The second pull, with every gate in place, cost about 14 credits (9 enrich, 1.4 AI, 3 email) for 7 new cell A contacts, 2 of them email-ready.
+The cost per contactable person is high because the first run (2026-11-19) enriched duplicate companies and found emails before the market and role gates existed: 18 emails went to people we can't email, and lookups ran on DPOs. The second pull, with every gate in place, cost about 14 credits (9 enrich, 1.4 AI, 3 email) for 6 new cell A contacts (after the master-data fix), 2 of them email-ready.
 
 ### What this shows
 
 - The gate works: 59 rows have an email, but only 18 are sendable.
-- Cell A now has 7 contacts, after the mobility titles were added.
-- One AI answer looks wrong: "MDM & RDM Analyst" passed as mobile_endpoint, but "RDM" suggests master data, not mobile devices. Its email hasn't been looked up; the row needs a decision (prompt rule or manual hold).
+- Cell A now has 6 contacts, after the mobility titles were added.
+- One AI answer was wrong ("MDM & RDM Analyst" passed as mobile_endpoint). A prompt rule now treats MDM next to data words as master data; the row re-ran as not_relevant and is dropped.
+- The email waterfall now skips public-sector rows, whose email is held until legal answers.
 - Nothing has been sent. Blockers: legal sign-off, partner-region decision, facts.md approval, the 9 customer domains, copy (pending), sequencer choice.
 
 Full history: `work-log/2026-W47.md` (entries from 2026-11-20).

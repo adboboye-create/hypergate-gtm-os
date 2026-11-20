@@ -56,7 +56,7 @@ Built with `/build-workflow-spec`, section by section, each section approved by 
 | Company data | `Companies` table, fed by Send table data (only people not excluded and not flagged intern), deduped on domain, then **Enrich company** (run condition: domain not empty) | 1 credit per company (measured 2026-11-19) | |
 | Company industry and description | Enrich company `Industry` and `Description` | Included above | Industry feeds G2, G6, G7, C1. Description feeds A1 |
 | AI column (A1) | Use AI on job title + company industry + company description, JSON output. Model GPT-4.1 Mini on Clay's managed OpenAI account | 0.2 credits per row (measured 2026-11-20, 3-row proof) | The search payload has no headline, so the headline input was dropped (2026-11-20). Grok 4.1 was rejected by Clay ("Model does not support Use AI") and refunded |
-| Work email | Waterfall: Icypeas, Kitt, Enrow, LeadMagic, Findymail, each validated by Findymail. Run condition: `Ready to Contact?` = true AND G3 = `email` | About 2.7 net credits per email found (measured 2026-11-19) | Store `Email Source` and `Email Found On` (compliance G7-C2) |
+| Work email | Waterfall: Icypeas, Kitt, Enrow, LeadMagic, Findymail, each validated by Findymail. Run condition: `Ready to Contact?` = true AND G3 = `email` AND G7 (public sector) is false (added 2026-11-20: public-sector email is held until legal answers, so it isn't collected) | About 2.7 net credits per email found (measured 2026-11-19) | Store `Email Source` and `Email Found On` (compliance G7-C2) |
 | LinkedIn | Manual, from a LinkedIn queue view | Free | LinkedIn's User Agreement bans automation tools (compliance §12.3) |
 
 ## 4. Signals table [ENGINE]
@@ -93,6 +93,7 @@ C1 and C2 never route. No count routes, so there are no count clusters. R1 value
     - `infrastructure_it`: corporate IT infrastructure (servers, Windows, network), no identity or mobile mention;
     - `not_relevant`: industrial or OT systems, data protection, applications, anything else;
     - `unclear`.
+  - Rules in the prompt (added after spot checks, 2026-11-20): an Enterprise or Infrastructure Architect is `infrastructure_it` in any industry; MDM next to data words (RDM, master data, reference data, data governance) means master data management, so `not_relevant`.
   - `evidence`: a short quote from the title, headline or description supporting the answer. Empty if `unclear`.
 - **Proof:** run on 3 rows you can judge before running the rest.
 - **`unclear` means held, never sent.**
