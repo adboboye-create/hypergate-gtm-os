@@ -133,7 +133,7 @@ What a finished row in **People** looks like, reading left to right (made-up val
 
 | Filter | Set it to | Why |
 |---|---|---|
-| **Job title: include** (current job, "similar to") | Infrastructure Architect · Enterprise Architect · Systems Engineer · Mobility Manager · Data Protection Officer | Spec section 1. DPOs are imported but held (no persona) |
+| **Job title: include** (current job, "similar to") | Infrastructure Architect · Enterprise Architect · Systems Engineer · Mobility Manager · Data Protection Officer · End User Computing · EUC Engineer · Endpoint Engineer · Endpoint Management · Mobile Device Management · MDM Administrator · Enterprise Mobility · Mobility Engineer · Intune Engineer | Spec section 1. DPOs are imported but held (no persona). The 9 mobility titles were added on 2026-11-20 so cell A has people |
 | **Job title: exclude** | Intern · Student · Apprentice · Trainee · Working Student · Recruiter · Talent Acquisition · People Partner · Account Executive · Account Manager · Business Development · Presales · Marketing · Help Desk · Service Desk · Desktop Support · Support Technician · Freelance · Contractor · Interim · Retired | Spec section 2 |
 | **Company size** | 201-500 · 501-1,000 · 1,001-5,000 | Spec: 201 to 5,000 staff |
 | **Company industry** | Banking · Financial Services · Insurance · Government Administration · Public Policy · Public Safety · Oil and Gas · **Law Practice · Legal Services** | Spec section 2. Law was added on 2026-11-20 and isn't in the existing search yet |
@@ -142,7 +142,7 @@ What a finished row in **People** looks like, reading left to right (made-up val
 
 ### 2.2 Check the count before importing
 
-Write down the total above the preview. Spec section 7: compare it with last month's. The first pull (2026-11-19, before law, France and the US were added) gave **77**.
+Write down the total above the preview. Spec section 7: compare it with last month's. The first pull (2026-11-19) gave **77**; with the mobility titles added on 2026-11-20 the preview counted 68 (the 6-month window had moved) and the update appended 10 people the search hadn't returned before.
 
 ### 2.3 Import
 
@@ -200,10 +200,10 @@ Table settings → **Deduplicate** → `LinkedIn Profile`.
 
 ### 3.1 `R1 Role Group` (the router, spec section 4)
 
-- **Plain English:** *"Role group from Job Title, first match wins: mobility, mobile device, MDM, EMM, EUC, end user computing or endpoint = mobility; architect, systems engineer or infrastructure = infrastructure; data protection, DPO or privacy = dpo; otherwise other."*
+- **Plain English:** *"Role group from Job Title, first match wins: mobility, mobile device, MDM, EMM, EUC, end user computing, endpoint or Intune = mobility; architect, systems engineer or infrastructure = infrastructure; data protection, DPO or privacy = dpo; otherwise other."*
 - **Formula:**
 ```javascript
-/\b(mobility|mobile device|mdm|emm|euc|end user computing|endpoint)\b/i.test({{Job Title}} || "") ? "mobility"
+/\b(mobility|mobile device|mdm|emm|euc|end user computing|endpoint|intune)\b/i.test({{Job Title}} || "") ? "mobility"
 : /\b(architect|systems engineer|infrastructure)\b/i.test({{Job Title}} || "") ? "infrastructure"
 : /\b(data protection|dpo|privacy)\b/i.test({{Job Title}} || "") ? "dpo"
 : "other"
@@ -246,7 +246,7 @@ Table settings → **Deduplicate** → `LinkedIn Profile`.
 5. Table settings → **Deduplicate** → `Company Domain`.
 6. Run Send table data on **1 row**, check the company arrived, then the rest.
 
-**Check:** Companies has no duplicate domains. The first pull gave 70 companies for 77 people.
+**Check:** Companies has no duplicate domains. Count over the **All rows** view, not the table's first view (the existing table opens on a filtered "ICP Pass" view). The first build had no dedupe: 77 company rows with 7 domains repeated, fixed on 2026-11-20 by turning dedupe on (79 companies after the second pull).
 **Cost:** free.
 
 ### 4.2 Enrich each company
@@ -264,7 +264,7 @@ Table settings → **Deduplicate** → `LinkedIn Profile`.
 | `Description` | Company description from Enrich company | `{{Enrich company}}?.description` |
 | `Industry` | The company industry from Enrich company, or blank | `{{Enrich company}}?.industry \|\| ""` |
 
-**Cost:** **1 credit per company** (measured 2026-11-19: 70 credits for 70 companies).
+**Cost:** **1 credit per company** (measured: 75 on the first run, including about 7 duplicates enriched before dedupe; 9 on the second pull).
 
 ### 4.3 Company gates (free)
 
@@ -288,7 +288,7 @@ Table settings → **Deduplicate** → `LinkedIn Profile`.
 : ""
 ```
 
-**Check:** on the first pull all 70 companies passed G1, G2 and G6 (the search already filters size and industry), and 12 were public sector. Read 3 rows by eye.
+**Check:** read 3 rows by eye. After the second pull, 72 of 79 companies pass (one fails on size: 10,001+ staff), and some are public sector.
 **Cost:** free.
 
 > The old ICP Pass columns in both tables (now named `(unused) old ICP Pass`) are left over from the first build and no longer drive anything. Delete them or leave them; see [Things the spec needs to fix](#things-the-spec-needs-to-fix) 6.
@@ -318,7 +318,7 @@ In People:
 {{T1 New in Role?}} === true && {{Company Gates Pass}} === true && {{G4 Not Excluded?}} === true && {{G5 Not Junior?}} === true && ["email","linkedin_only"].includes({{G3 Market}}) && {{R1 Role Group}} !== "dpo"
 ```
 
-**Check:** a person at a company you checked in Part 4 shows the same values. On the first pull, 40 of 77 people were `A1 Eligible?` (after the intern fix).
+**Check:** a person at a company you checked in Part 4 shows the same values. After the second pull, 47 of 87 people are `A1 Eligible?`.
 **Cost:** free.
 
 ---
@@ -363,7 +363,7 @@ In People:
 > **What `unclear` means:** held, never sent, until a person reviews the row. `not_relevant` means dropped.
 
 **Check:** filter `Role Focus` = not_relevant and read every `Role Evidence`. Would you agree? On the first run, a water and wastewater systems engineer in government was correctly dropped, and two enterprise architects at oil and gas companies were wrongly dropped until the "any industry" rule was added.
-**Cost:** **0.2 credits per row** (measured 2026-11-20). The first run: 40 rows plus 2 re-runs = 8.4 credits (the 40th row became eligible after the intern fix).
+**Cost:** **0.2 credits per row** (measured 2026-11-20). Spent so far: 9.8 credits for 47 rows, including 2 re-runs after the prompt fix. One answer looks wrong: "MDM & RDM Analyst" came back mobile_endpoint, though "RDM" points to master data (spec fix 9).
 
 ---
 
@@ -431,7 +431,7 @@ All in People, all free.
 
 > **Held rows stay false** (spec section 4): Germany and Austria (`G3 Market` = held), DPOs (`R1 Role Group` = dpo) and AI `unclear` can never be `Ready to Contact?`, because `Candidate OK?` requires an email or linkedin_only market, a mobility or infrastructure role group, and a passing `Role Focus`.
 
-**Check:** filter `Ready to Contact?` = true. No row has `G3 Market` = held, `R1 Role Group` = dpo, or `Role Focus` = unclear. On the first pull: 35 rows, all cell B (only 1 mobility person was found, and they didn't pass).
+**Check:** filter `Ready to Contact?` = true. No row has `G3 Market` = held, `R1 Role Group` = dpo, or `Role Focus` = unclear. After the second pull: 42 rows, cell A 7 and cell B 35.
 **Cost:** free.
 
 ---
@@ -468,7 +468,7 @@ A plain **date** column. A formula can't read when a cell ran, so fill it on eac
 | `E1 Email Sendable?` | True if Work Email is filled (validated by the waterfall), Email Domain OK is true, and Email Source and Email Found On are filled | `!!{{Work Email}} && {{Email Domain OK?}} === true && !!{{Email Source}} && {{Email Source}} !== "unknown" && !!{{Email Found On}}` |
 | `Ready for Email?` | True if Ready to Contact is true, G3 Market is email, Public Sector is not true and E1 Email Sendable is true | `{{Ready to Contact?}} === true && {{G3 Market}} === "email" && {{Public Sector}} !== true && {{E1 Email Sendable?}} === true` |
 
-**Check:** every `Ready for Email?` row has a source, a date and a matching domain. On the first pull: 16 rows.
+**Check:** every `Ready for Email?` row has a source, a date and a matching domain. After the second pull: 18 rows.
 **Cost:** about **2.7 net credits per email found** (measured 2026-11-19: 152 net credits for 57 emails; lookups that find nothing are refunded).
 
 ---
@@ -512,7 +512,7 @@ Variables already available for copy (spec section 6): `First Name`, `Company`, 
 
 People: **Person (from search)** · **Company facts** · **Gates (free)** · **AI role check** · **Routing** · **Email checks**, with the email waterfall in its own group. Companies: **Company** · **Enrichment** · **Gates (free)** · **Contacts**. Exclusion & Block list: **Never contact**. Select columns → right-click → **Group columns** (may be called "Create group"). Don't hide paid columns or lookups: they show where data came from.
 
-**Check:** first pull: Ready to send 16, LinkedIn only 18, Review: email domain 1, Held 36, Dropped 6.
+**Check:** after the second pull: Ready to send 18, LinkedIn only 23, Review: email domain 1, Held 38, Dropped 7.
 **Cost:** free.
 
 ---
@@ -556,8 +556,10 @@ Watch the credits counter before and after each paid step and write the numbers 
 
 ## Run history (honest record)
 
-- **2026-11-19:** the first build ran the people search (77 people), Send table data, Enrich company (70 companies, 70 credits) and the email waterfall (72 rows, 152 net credits, 57 emails) **with auto-run on and before run conditions existed** on Enrich company and the waterfall. There was no recorded 1-row proof for those steps. The waterfall ran on Germany and Canada too (8 and 10 emails); those rows are now held or LinkedIn-only and never reach `Ready for Email?`.
+- **2026-11-19:** the first build ran the people search (77 people), Send table data, Enrich company (75 of 77 company rows, 75 credits, no dedupe yet) and the email waterfall (72 rows, 152 net credits, 57 emails) **with auto-run on and before run conditions existed** on Enrich company and the waterfall. There was no recorded 1-row proof for those steps. The waterfall ran on Germany and Canada too (8 and 10 emails); those rows are now held or LinkedIn-only and never reach `Ready for Email?`.
 - **2026-11-20:** auto-run turned off on all 3 tables; run conditions added to Enrich company and the waterfall; every formula, gate, view and group above added; the AI column proven on 3 rows, then run on the rest (8.4 credits including 2 re-runs after a prompt fix and 1 row unlocked by the intern fix). From now on, every paid step follows the 1-row rule (3 rows for AI).
+- **2026-11-20, correction:** the Companies table had no dedupe and 77 rows (7 domains repeated); counts read earlier from its filtered first view said 70. Dedupe on `Company Domain` switched on (8 duplicate rows removed).
+- **2026-11-20, second pull:** 9 mobility titles added; 10 new people appended. Free steps, then Enrich company (1-row proof, then 8 more: 9 credits), AI (3-row proof, then 4: 1.4 credits) and the email waterfall (1-row proof, then 2: 3 credits). Public-sector rows and one likely AI false positive were left out of the email lookup.
 - **2026-11-20, re-proof:** Enrich company force re-run on 1 company (SUCCESS, same size, industry and country, 1 credit). Email waterfall force re-run on 1 contact: Icypeas found the same email and Findymail validated it (0.5 + 1 credits); that row's `Email Found On` was reset to the re-run date. Both paid steps are now proven on 1 row with their current run conditions.
 
 ---
@@ -600,10 +602,12 @@ Watch the credits counter before and after each paid step and write the numbers 
 Found while writing this guide. Update [`workflow-spec.md`](../workflow-spec.md); this guide didn't edit it.
 
 1. **Section 2, title excludes / G5:** fixed in the build on 2026-11-20 (whole-word match, Part 3). No spec change needed.
-2. **Sections 1 and 3, mobility titles:** the search found only 1 mobility person in 77, so cell A is empty. Add mobility titles to the search (EUC, End User Computing, MDM, Mobile Device Management, Endpoint, Enterprise Mobility, Intune) or accept that this play is cell B only.
+2. **Sections 1 and 3, mobility titles:** done on 2026-11-20 (9 titles added to the search, `intune` added to R1). Cell A went from 0 to 7 contacts. Spec updated.
 3. **Section 3, Send table data:** the existing build sent everyone to Companies. Fixed in Clay on 2026-11-20 (run condition in Part 4.1); no spec change needed.
 4. **Section 4, G4 90-day rule:** nothing records "last contacted" yet. Add `Last Contacted At` when the sequencer is connected (Part 12), and replace it with the Zoho CRM check later.
 5. **Section 4, E1 provenance:** `Email Found On` can't be set by a formula. Write into the spec that it's filled on each waterfall run (by hand or by `tools/rex`), or the 30-day notice clock (G7-C3) can't be checked.
 6. **Leftover columns:** the old ICP Pass columns and the 6 disabled waterfall steps (Hunter, Prospeo, Datagma, Wiza, SMARTe, Dropcontact, run condition `false`) do nothing. Renamed with an `(unused)` prefix on 2026-11-20; delete them if you prefer.
 7. **Column names:** done on 2026-11-20. Each waterfall step is now named by position and provider (`Find Email 1 (Icypeas)`, `Verify 1 (Findymail)` and so on), the lookups are `Exclusion Lookup` and `Company Lookup`, and Send table data is `Send to Companies`.
 8. **Section 2, search changes:** law industries, France and the US are in the spec but not yet in the live search. Re-run the search with them (free) and import into the same table.
+9. **Section 4, A1 prompt:** "MDM & RDM Analyst" passed as mobile_endpoint, but MDM next to RDM means master data management. Add a rule: "MDM next to data words (RDM, master data, data governance) means master data management: not_relevant." Re-run that 1 row (0.2 credits).
+10. **Section 3, email waterfall run condition:** add "and not public sector". Public-sector emails are held until legal answers, so looking them up costs credits and starts the 30-day notice clock for nothing. In the second pull these rows were skipped by hand.

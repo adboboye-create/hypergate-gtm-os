@@ -14,53 +14,60 @@ Spec: [../workflow-spec.md](../workflow-spec.md) (STRUCTURE-APPROVED 2026-11-20,
 
 The links need a login to the Clay workspace. Workbook and table links are built from the IDs Clay returned; if one doesn't open, use the folder link.
 
-## Results scorecard (read from Clay on 2026-11-20)
+## Results scorecard (read from Clay on 2026-11-20, all rows)
+
+Two pulls: the first (2026-11-19) with infrastructure, architect, DPO and mobility-manager titles, 77 people; the second (2026-11-20) added 9 mobility titles and appended 10 new people (only people the search hadn't returned before).
+
+> **Correction (2026-11-20):** an earlier version of this scorecard said 70 companies and 70 Enrich company credits. Those figures were read from the Companies table's first view, which is filtered ("ICP Pass"). Over all rows, the first run created 77 company rows with no dedupe (7 domains twice or more) and enriched 75 of them. Dedupe on `Company Domain` was switched on afterwards, which removed 8 duplicate rows.
 
 ### Funnel
 
 | Step | Count | Note |
 |---|---|---|
-| Free people search, imported | 77 people | Started current role in the last 6 months; UK 44, Canada 15, Germany 10, Switzerland 8 |
-| Companies (deduped on domain) | 70 | Enrich company succeeded on 70 of 70 (100%) |
-| Not on the never-contact list | 76 of 77 | 1 row has no domain, so it can't be checked and is held back |
-| Company passes size, industry, not agency | 71 of 77 people | 6 people's company didn't match in the lookup |
-| Role group | infrastructure 49, DPO 26 (held), mobility 1, other 1 | Only 1 mobility title found, so cell A is empty |
-| Market | email 52, LinkedIn-only 15 (Canada), held 10 (Germany, Austria) | Compliance follows the person's country |
-| Eligible for the AI role check | 40 | All free gates passed, not DPO |
-| AI answer | infrastructure_it 36, not_relevant 3, unclear 1 (held) | Proven on 3 rows first; 1 prompt fix after a spot check |
-| Candidates | 36 | |
-| **Ready to Contact?** (max 2 per company) | **35**, all cell B | 1 dropped by the 2-per-company rule |
-| **Ready for Email?** | **16** | Of the 27 Ready to Contact in email markets: 5 public sector (email held until legal answers), 6 without a sendable email (1 email-domain mismatch in review) |
-| LinkedIn only | 18 | Canada 8, public sector 5, no sendable email 5 |
-| Held / Dropped | 36 / 6 | Held: Germany, Austria, DPOs, AI unclear |
+| Free people search, imported | 87 people | UK 50, Canada 17, Germany 12, Switzerland 8 |
+| Companies (deduped on domain) | 79 | Enriched 78 of 79; 1 row has no domain |
+| Not on the never-contact list | 86 of 87 | 1 row has no domain, so it can't be checked and is held back |
+| Company passes size, industry, not agency | 80 of 87 people | 7 fail (one company is 10,001+ staff; the rest have no company match) |
+| Role group | infrastructure 49, DPO 26 (held), mobility 11, other 1 | Mobility went from 1 to 11 after the title change |
+| Market | email 58, LinkedIn-only 17 (Canada), held 12 (Germany, Austria) | Compliance follows the person's country |
+| Eligible for the AI role check | 47 | All free gates passed, not DPO |
+| AI answer | infrastructure_it 37, mobile_endpoint 6, not_relevant 3, unclear 1 (held) | Proven on 3 rows first in both pulls; 1 prompt fix after a spot check |
+| Candidates | 43 | |
+| **Ready to Contact?** (max 2 per company) | **42**: cell A (mobility) 7, cell B (infrastructure) 35 | 1 dropped by the 2-per-company rule |
+| **Ready for Email?** | **18** (cell B 16, cell A 2) | Of the 33 Ready to Contact in email markets: 7 public sector (email held until legal answers), 8 without a sendable email (1 email-domain mismatch in review, 1 held for a likely false positive, the rest not found or not looked up) |
+| LinkedIn only | 23 | Canada 9 plus public-sector and no-email rows |
+| Held / Dropped | 38 / 7 | Held: Germany, Austria, DPOs, AI unclear |
 
 ### Fill rates
 
 | Measure | Rate |
 |---|---|
-| Company enrichment | 70 of 70 (100%) |
-| Work email found (first waterfall run) | 57 of 72 rows run (79%) |
-| Work email found among AI-checked rows | 31 of 40 (78%), the other 9 recorded "not found" |
-| AI role check passes | 36 of 40 (90%) |
-| Emails found that are usable for email | 16 of 57 (28%). 18 were found in Germany and Canada before the market gate existed, and can't be emailed |
+| Company enrichment | 78 of 79 (99%) |
+| Work email found | 59 of 75 rows looked up (79%) |
+| Work email found among AI-checked rows | 33 of 47 (70%) |
+| AI role check passes | 43 of 47 (91%) |
+| Emails found that are usable for email | 18 of 59 (31%). 18 were found in Germany and Canada on the first run, before the market gate existed, and can't be emailed |
 
-### Cost (Clay credits, measured per cell)
+### Cost (Clay credits)
 
-| Step | Runs | Net credits | Per unit |
-|---|---|---|---|
-| Enrich company | 70 + 1 re-proof | 71 | 1 per company |
-| Email waterfall (find + Findymail verify) | 72 rows + 1 re-proof | 153.5 | about 2.7 per email found (no-data lookups refunded) |
-| AI role check (GPT-4.1 Mini) | 42 cells (40 rows + 2 re-runs) | 8.4 | 0.2 per row |
-| AI on Grok 4.1 (rejected by Clay) | 3 | 0 | refunded |
-| Search, lookups, formulas, Send to Companies | | 0 | free |
-| **Total** | | **about 233** | **about 6.7 per Ready to Contact person, about 14.6 per Ready for Email person** |
+"Spent" counts every paid run from the work log, including force re-runs and the 8 deleted duplicate rows. Clay's cells only keep each cell's latest run, so a cost read from the table today shows less.
 
-The cost per contactable person is high because the first run (2026-11-19) found emails before the market and role gates existed: 18 emails went to people we can't email, and lookups ran on DPOs. With the current run conditions, the waterfall only runs on Ready to Contact people in email markets.
+| Step | Spent | Per unit |
+|---|---|---|
+| Enrich company | 85 (75 first run, 1 re-proof, 9 new companies) | 1 per company. About 7 credits went on duplicate companies before dedupe |
+| Email waterfall (find + Findymail verify) | about 156.5 (152 first run, 1.5 re-proof, 3 new) | about 2.7 per email found; lookups that find nothing are refunded |
+| AI role check (GPT-4.1 Mini) | 9.8 (47 rows, 2 prompt-fix re-runs, 1 row after the intern fix) | 0.2 per row |
+| AI on Grok 4.1 (rejected by Clay) | 0 | refunded |
+| Search, lookups, formulas, Send to Companies | 0 | free |
+| **Total** | **about 251** | **about 6.0 per Ready to Contact person, about 14 per Ready for Email person** |
+
+The cost per contactable person is high because the first run (2026-11-19) enriched duplicate companies and found emails before the market and role gates existed: 18 emails went to people we can't email, and lookups ran on DPOs. The second pull, with every gate in place, cost about 14 credits (9 enrich, 1.4 AI, 3 email) for 7 new cell A contacts, 2 of them email-ready.
 
 ### What this shows
 
-- The gate works: 57 rows have an email, but only 16 are sendable.
-- The play is cell B only until mobility titles are added to the search.
+- The gate works: 59 rows have an email, but only 18 are sendable.
+- Cell A now has 7 contacts, after the mobility titles were added.
+- One AI answer looks wrong: "MDM & RDM Analyst" passed as mobile_endpoint, but "RDM" suggests master data, not mobile devices. Its email hasn't been looked up; the row needs a decision (prompt rule or manual hold).
 - Nothing has been sent. Blockers: legal sign-off, partner-region decision, facts.md approval, the 9 customer domains, copy (pending), sequencer choice.
 
 Full history: `work-log/2026-W47.md` (entries from 2026-11-20).
