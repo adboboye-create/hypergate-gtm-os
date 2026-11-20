@@ -1,0 +1,146 @@
+{
+  "title": "How the new-joiner workflow moves through Clay",
+  "subtitle": "Each row is a table. Follow the numbers left to right. Paid steps only run on rows that passed every step before them. Nothing is sent until legal, partner and facts sign-off.",
+  "lanes": [
+    {
+      "id": "excl",
+      "name": "Exclusion & Block list",
+      "note": "you upload it",
+      "dashed": true
+    },
+    {
+      "id": "ppl",
+      "name": "People",
+      "note": "one row per person.\nThe main table.",
+      "main": true
+    },
+    {
+      "id": "co",
+      "name": "Companies",
+      "note": "one row per company"
+    }
+  ],
+  "steps": [
+    {
+      "id": "x",
+      "n": "0",
+      "lane": "excl",
+      "col": 2,
+      "title": "Never contact",
+      "text": "Customers and partners, by domain",
+      "cost": null
+    },
+    {
+      "id": "s1",
+      "n": "1",
+      "lane": "ppl",
+      "col": 1,
+      "title": "Find people new in role",
+      "text": "People search: titles, 7 countries, started in the last 6 months",
+      "cost": "free"
+    },
+    {
+      "id": "s2",
+      "n": "2",
+      "lane": "ppl",
+      "col": 2,
+      "title": "Free person checks",
+      "text": "Market, not excluded, not junior, role group",
+      "cost": "free"
+    },
+    {
+      "id": "s3",
+      "n": "3",
+      "lane": "co",
+      "col": 3,
+      "title": "Send each company once",
+      "text": "Deduped on domain",
+      "cost": "free"
+    },
+    {
+      "id": "s4",
+      "n": "4",
+      "lane": "co",
+      "col": 4,
+      "title": "Enrich and gate company",
+      "text": "Size, industry, not agency, public sector flag",
+      "cost": "paid"
+    },
+    {
+      "id": "s5",
+      "n": "5",
+      "lane": "ppl",
+      "col": 5,
+      "title": "AI role check",
+      "text": "Is the role corporate IT? JSON answer with evidence",
+      "cost": "paid"
+    },
+    {
+      "id": "s6",
+      "n": "6",
+      "lane": "co",
+      "col": 6,
+      "title": "Pick 2 per company",
+      "text": "Mobility first, then newest start date",
+      "cost": "free"
+    },
+    {
+      "id": "s7",
+      "n": "7",
+      "lane": "ppl",
+      "col": 7,
+      "title": "Route to a cell",
+      "text": "Cell A or B. Ready to Contact? Held rows stay false",
+      "cost": "free",
+      "highlight": true
+    },
+    {
+      "id": "s8",
+      "n": "8",
+      "lane": "ppl",
+      "col": 8,
+      "title": "Email and views",
+      "text": "Verified email (email markets only), Ready to send, Held, Dropped",
+      "cost": "paid"
+    }
+  ],
+  "arrows": [
+    {
+      "from": "s1",
+      "to": "s2"
+    },
+    {
+      "from": "x",
+      "to": "s2",
+      "label": "checked against",
+      "dashed": true
+    },
+    {
+      "from": "s2",
+      "to": "s3"
+    },
+    {
+      "from": "s3",
+      "to": "s4"
+    },
+    {
+      "from": "s4",
+      "to": "s5",
+      "label": "company\nfacts"
+    },
+    {
+      "from": "s5",
+      "to": "s6",
+      "label": "candidates"
+    },
+    {
+      "from": "s6",
+      "to": "s7",
+      "label": "picked people\ngo back"
+    },
+    {
+      "from": "s7",
+      "to": "s8"
+    }
+  ]
+}
