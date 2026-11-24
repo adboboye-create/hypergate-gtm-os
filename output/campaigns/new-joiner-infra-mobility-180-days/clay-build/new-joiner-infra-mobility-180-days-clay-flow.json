@@ -1,6 +1,6 @@
 {
   "title": "How the new-joiner workflow moves through Clay",
-  "subtitle": "Each row is a table. Follow the numbers left to right. Paid steps only run on rows that passed every step before them. Nothing is sent until legal, partner and facts sign-off.",
+  "subtitle": "Each row is a table, then Audiences and one workflow. Follow the numbers left to right. Paid steps only run on rows that passed every step before them. Nothing is sent until legal, partner and facts sign-off.",
   "lanes": [
     {
       "id": "excl",
@@ -18,6 +18,16 @@
       "id": "co",
       "name": "Companies",
       "note": "one row per company"
+    },
+    {
+      "id": "aud",
+      "name": "Audiences",
+      "note": "one record per person.\nDynamic segment."
+    },
+    {
+      "id": "wf",
+      "name": "Workflow",
+      "note": "Email second try.\nRuns on segment entry."
     }
   ],
   "steps": [
@@ -36,7 +46,7 @@
       "lane": "ppl",
       "col": 1,
       "title": "Find people new in role",
-      "text": "People search: titles, 7 countries, started in the last 6 months",
+      "text": "People search: titles, 6 countries (US next), started in the last 6 months",
       "cost": "free"
     },
     {
@@ -102,6 +112,24 @@
       "title": "Email and views",
       "text": "Verified email (email markets only), Ready to send, Held, Dropped",
       "cost": "paid"
+    },
+    {
+      "id": "s9",
+      "n": "9",
+      "lane": "aud",
+      "col": 9,
+      "title": "Load + segment",
+      "text": "126 people loaded by a routine. Segment: Ready to Contact, email market, no email yet",
+      "cost": "free"
+    },
+    {
+      "id": "s10",
+      "n": "10",
+      "lane": "wf",
+      "col": 9,
+      "title": "Find, branch, write back",
+      "text": "Wiza (LinkedIn) > found? > Findymail verified? > write email or not found; leaves segment",
+      "cost": "paid"
     }
   ],
   "arrows": [
@@ -141,6 +169,16 @@
     {
       "from": "s7",
       "to": "s8"
+    },
+    {
+      "from": "s8",
+      "to": "s9",
+      "label": "routine"
+    },
+    {
+      "from": "s9",
+      "to": "s10",
+      "label": "enters\nsegment"
     }
   ]
 }
