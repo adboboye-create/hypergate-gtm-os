@@ -53,6 +53,31 @@ The links need a login to the Clay workspace. Workbook and table links are built
 | Status | Held 61 · Ready to send 26 · LinkedIn only 24 · Dropped 12 · Review: email domain 3 |
 | Spend on 2026-11-24 | About 68 credits for the third pull (Enrich company 32, AI about 5, email waterfall about 31) and 15 for the Audiences email workflow (8 runs), 83.2 in total, read from the workspace balance |
 
+**Funnel and fill rates (all 126 people)**
+
+| Step | Count | Rate |
+|---|---|---|
+| New in role (T1, the signal) | 126 | 100% (the search only returns new joiners) |
+| Company gates pass | 113 | 90% |
+| Eligible for the AI check (A1 Eligible) | 72 | 57%; the AI ran on 73 (1 row was eligible when it ran and isn't now) |
+| Ready to Contact | 53 | 42% (cell A 8, cell B 45) |
+| Ready to Contact, email market, not public sector | 37 | the rows the waterfall runs on |
+| Email found among those 37 (`Email Result`) | 29 | 78%; 8 "not found" |
+| Email domain matches the company | 26 | 70% of 37; these are Ready for Email |
+
+**Cost per row (Clay's per-cell cost data, current rows, net of refunds)**
+
+| Column | Net credits | Runs | Per run |
+|---|---|---|---|
+| Enrich company (Companies) | 110 | 111 | 1.0 |
+| A1 Role Focus (AI, gpt-4.1-mini) | about 14.6 | 73 | 0.2 |
+| Email waterfall: 5 find + 5 verify steps | about 186 | 87 people | about 2.7 per email found (69 emails) |
+| **Table total** | **about 311** | | |
+| Per Ready to Contact (53) | about 5.9 | | |
+| Per Ready for Email (26) | about 12.0 | | |
+
+Cell data only covers rows that still exist and each cell's latest run, so it reads a little under the real spend: force re-runs and the 8 duplicate company rows deleted on 2026-11-20 drop out. The work log's balance readings put the table at about 320 credits to date, plus 15 for the Audiences email workflow. 372 People cells and 220 Companies cells carry no cost data; those are free lookups and paid steps whose run condition wasn't met.
+
 The 2026-11-20 scorecard below is kept as history; its totals are superseded by this table.
 
 ## Results scorecard (read from Clay on 2026-11-20, all rows)
