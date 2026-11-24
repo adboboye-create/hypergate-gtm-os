@@ -200,11 +200,11 @@ Table settings → **Deduplicate** → `LinkedIn Profile`.
 
 ### 3.1 `R1 Role Group` (the router, spec section 4)
 
-- **Plain English:** *"Role group from Job Title, first match wins: mobility, mobile device, MDM, EMM, EUC, end user computing, endpoint or Intune = mobility; architect, systems engineer or infrastructure = infrastructure; data protection, DPO or privacy = dpo; otherwise other."*
+- **Plain English:** *"Role group from Job Title, first match wins: mobility, mobile device, MDM, EMM, EUC, end user computing (with or without hyphen), endpoint or Intune = mobility; architect, system engineer or systems engineer, or infrastructure = infrastructure; data protection, DPO or privacy = dpo; otherwise other."*
 - **Formula:**
 ```javascript
-/\b(mobility|mobile device|mdm|emm|euc|end user computing|endpoint|intune)\b/i.test({{Job Title}} || "") ? "mobility"
-: /\b(architect|systems engineer|infrastructure)\b/i.test({{Job Title}} || "") ? "infrastructure"
+/\b(mobility|mobile device|mdm|emm|euc|end[- ]user computing|endpoint|intune)\b/i.test({{Job Title}} || "") ? "mobility"
+: /\b(architect|systems? engineer|infrastructure)\b/i.test({{Job Title}} || "") ? "infrastructure"
 : /\b(data protection|dpo|privacy)\b/i.test({{Job Title}} || "") ? "dpo"
 : "other"
 ```
@@ -305,8 +305,8 @@ In People:
 
 | Column | Plain English | Formula |
 |---|---|---|
-| `Company Gates Pass` | True if the company row has Company Gates Pass true (size, industry, not an agency) | `{{Company Lookup}}?.record?.["Company Gates Pass?"] === true` |
-| `Public Sector` | True if the company row is public sector (held from email) | `{{Company Lookup}}?.record?.["G7 Public Sector?"] === true` |
+| `Company Gates Pass` | True if the company row has Company Gates Pass true (size, industry, not an agency) | `{{Company Lookup}}?.record?.["Company Gates Pass"] === true` |
+| `Public Sector` | True if the company row is public sector (held from email) | `{{Company Lookup}}?.record?.["G7 Public Sector"] === true` |
 | `Segment` | The C1 segment from the company row | `{{Company Lookup}}?.record?.["C1 Segment"] \|\| ""` |
 | `Company Industry` | The industry from the company row | `{{Company Lookup}}?.record?.["Industry"] \|\| ""` |
 | `Company Description` | The company description from the company row | `{{Company Lookup}}?.record?.["Description"] \|\| ""` |
@@ -389,7 +389,7 @@ In People:
 2. Formula `Chosen Contacts`:
    - **Plain English:** *"From People Found, keep people with Candidate OK true, sort by Role Rank (mobility first) then newest Start Date, take the first 2 and return their LinkedIn Profiles separated by a space."*
 ```javascript
-(({{People Found}})?.records || []).filter(p => p["Candidate OK?"] === true).sort((a, b) => (Number(a["Role Rank"]) - Number(b["Role Rank"])) || String(b["Start Date"] || "").localeCompare(String(a["Start Date"] || ""))).slice(0, 2).map(p => p["LinkedIn Profile"]).join(" ")
+(({{People Found}})?.records || []).filter(p => p["Candidate OK"] === true).sort((a, b) => (Number(a["Role Rank"]) - Number(b["Role Rank"])) || String(b["Start Date"] || "").localeCompare(String(a["Start Date"] || ""))).slice(0, 2).map(p => p["LinkedIn Profile"]).join(" ")
 ```
 3. Formula `Company Status`: *"Failed gates if Company Gates Pass is not true; Hold: no contact if Chosen Contacts is empty; otherwise Has contacts."*
 ```javascript
@@ -560,6 +560,7 @@ Watch the credits counter before and after each paid step and write the numbers 
 - **2026-11-20:** auto-run turned off on all 3 tables; run conditions added to Enrich company and the waterfall; every formula, gate, view and group above added; the AI column proven on 3 rows, then run on the rest (8.4 credits including 2 re-runs after a prompt fix and 1 row unlocked by the intern fix). From now on, every paid step follows the 1-row rule (3 rows for AI).
 - **2026-11-20, correction:** the Companies table had no dedupe and 77 rows (7 domains repeated); counts read earlier from its filtered first view said 70. Dedupe on `Company Domain` switched on (8 duplicate rows removed).
 - **2026-11-20, second pull:** 9 mobility titles added; 10 new people appended. Free steps, then Enrich company (1-row proof, then 8 more: 9 credits), AI (3-row proof, then 4: 1.4 credits) and the email waterfall (1-row proof, then 2: 3 credits). Public-sector rows and one likely AI false positive were left out of the email lookup.
+- **2026-11-24, third pull (non-US widened search):** 39 new people (UK 12, CH 11, DE 7, FR 6, CA 3), 32 new companies. Enrich company 1-row proof then 31 (32 credits); AI 3-row proof then 23 (26 rows, about 5.2 credits; 12 bare "System Engineer" titles came back unclear and are held); email waterfall 1-row proof then 11 (10 found; 8 Ready to send, 2 Review: email domain). About 68 credits in total, measured from the workspace balance.
 - **2026-11-20, re-proof:** Enrich company force re-run on 1 company (SUCCESS, same size, industry and country, 1 credit). Email waterfall force re-run on 1 contact: Icypeas found the same email and Findymail validated it (0.5 + 1 credits); that row's `Email Found On` was reset to the re-run date. Both paid steps are now proven on 1 row with their current run conditions.
 
 ---
@@ -605,9 +606,11 @@ Found while writing this guide. Update [`workflow-spec.md`](../workflow-spec.md)
 2. **Sections 1 and 3, mobility titles:** done on 2026-11-20 (9 titles added to the search, `intune` added to R1). Cell A went from 0 to 7 contacts. Spec updated.
 3. **Section 3, Send table data:** the existing build sent everyone to Companies. Fixed in Clay on 2026-11-20 (run condition in Part 4.1); no spec change needed.
 4. **Section 4, G4 90-day rule:** nothing records "last contacted" yet. Add `Last Contacted At` when the sequencer is connected (Part 12), and replace it with the Zoho CRM check later.
-5. **Section 4, E1 provenance:** `Email Found On` can't be set by a formula. Write into the spec that it's filled on each waterfall run (by hand or by `tools/rex`), or the 30-day notice clock (G7-C3) can't be checked.
+5. **Section 4, E1 provenance (done 2026-11-24):** the spec now says `Email Found On` is set to the run date on every row that got an email after each waterfall run. Done with `tools/rex` for the third pull.
 6. **Leftover columns (done 2026-11-24):** the old ICP Pass columns and view, and the 6 disabled waterfall steps (Hunter, Prospeo, Datagma, Wiza, SMARTe, Dropcontact) with their 6 verify columns, were deleted. The Work Email waterfall now has 5 steps, and its group run condition is Ready to Contact true, market email, not public sector.
 7. **Column names:** done on 2026-11-20. Each waterfall step is now named by position and provider (`Find Email 1 (Icypeas)`, `Verify 1 (Findymail)` and so on), the lookups are `Exclusion Lookup` and `Company Lookup`, and Send table data is `Send to Companies`.
-8. **Section 2, search changes:** law industries, France and the US are in the spec but not yet in the live search. Re-run the search with them (free) and import into the same table.
+8. **Section 2, search changes (partly done 2026-11-24):** law industries and France added to the live search; 39 new people appended. The United States (234 matches in the free preview) is still to pull, as a capped batch.
+11. **Renamed columns broke 3 lookup formulas (fixed 2026-11-24):** the 2026-11-20 readability pass dropped the `?` from Companies and People column names, but People `Company Gates Pass` and `Public Sector` still read `"Company Gates Pass?"` / `"G7 Public Sector?"` from the lookup, and Companies `Chosen Contacts` read `"Candidate OK?"`. Old rows kept their pre-rename values; any refresh would have blanked them, and a blank Public Sector counts as not public sector. All three now read the current names; a full refresh left every old row's values unchanged. Note: formulas and plain-English lines elsewhere in this guide still show the older `?` names.
+12. **R1 missed singular titles (fixed 2026-11-24):** `systems engineer` didn't match "System Engineer" (common in CH and DE) and `end user computing` didn't match "End-User Computing". Now `systems? engineer` and `end[- ]user computing`. Old rows' role groups unchanged.
 9. **Section 4, A1 prompt:** done on 2026-11-20. Rule added (MDM next to data words = master data, not_relevant); the "MDM & RDM Analyst" row re-ran as not_relevant (0.2 credits).
 10. **Section 3, email waterfall run condition:** done on 2026-11-20 in the build and the spec ("and not public sector" on all 5 find steps).

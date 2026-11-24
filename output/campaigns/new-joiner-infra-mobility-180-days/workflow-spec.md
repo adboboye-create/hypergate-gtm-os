@@ -51,7 +51,7 @@ Built with `/build-workflow-spec`, section by section, each section approved by 
 
 | What | Source | Cost | Note |
 |---|---|---|---|
-| Trigger | Clay Find People: titles similar to Infrastructure Architect, Enterprise Architect, Systems Engineer, Mobility Manager, Data Protection Officer, End User Computing, EUC Engineer, Endpoint Engineer, Endpoint Management, Mobile Device Management, MDM Administrator, Enterprise Mobility, Mobility Engineer, Intune Engineer (mobility titles added 2026-11-20, user request); the title excludes above; company size 201-500, 501-1,000, 1,001-5,000; the industries above; started current role 6 months or less; person in United Kingdom, Switzerland, France, United States, Canada, Germany, Austria | Free | Re-run as a new pull; Clay keeps existing rows. Use the free preview count as the volume check |
+| Trigger | Clay Find People: titles similar to Infrastructure Architect, Enterprise Architect, Systems Engineer, Mobility Manager, Data Protection Officer, End User Computing, EUC Engineer, Endpoint Engineer, Endpoint Management, Mobile Device Management, MDM Administrator, Enterprise Mobility, Mobility Engineer, Intune Engineer (mobility titles added 2026-11-20, user request); the title excludes above; company size 201-500, 501-1,000, 1,001-5,000; the industries above; started current role 6 months or less; person in United Kingdom, Switzerland, France, United States, Canada, Germany, Austria | Free | Re-run as a new pull; Clay keeps existing rows. Use the free preview count as the volume check. Live search on 2026-11-24: law industries and France added; United States not yet (234 matches, to pull as a capped batch) |
 | Exclusions | `Exclusion & Block list` table, single-row lookup on `Domain` | Free | |
 | Company data | `Companies` table, fed by Send table data (only people not excluded and not flagged intern), deduped on domain, then **Enrich company** (run condition: domain not empty) | 1 credit per company (measured 2026-11-19) | |
 | Company industry and description | Enrich company `Industry` and `Description` | Included above | Industry feeds G2, G6, G7, C1. Description feeds A1 |
@@ -74,11 +74,11 @@ Every read is a formula (free) except A1 (Use AI). Regexes ignore case.
 | G6 | Not an agency | trigger (gate) | Company industry is not "Staffing and Recruiting" | boolean |
 | G7 | Public sector | trigger (gate, email only) | Company industry is Government Administration, Public Policy or Public Safety | boolean |
 | G8 | Picked | trigger (gate) | At most 2 per company: `mobility` first, then `infrastructure`, newest start date next (formula across a Companies lookup) | boolean |
-| R1 | Role group | router | Title regex, first match wins: `\b(mobility\|mobile device\|mdm\|emm\|euc\|end user computing\|endpoint\|intune)\b` → `mobility`; `\b(architect\|systems engineer\|infrastructure)\b` → `infrastructure`; `\b(data protection\|dpo\|privacy)\b` → `dpo`; else `other` | enum |
+| R1 | Role group | router | Title regex, first match wins: `\b(mobility\|mobile device\|mdm\|emm\|euc\|end[- ]user computing\|endpoint\|intune)\b` → `mobility`; `\b(architect\|systems? engineer\|infrastructure)\b` → `infrastructure`; `\b(data protection\|dpo\|privacy)\b` → `dpo`; else `other` | enum |
 | A1 | Role focus (AI) | trigger (gate) | Use AI on title + company industry + company description. Pass: `mobile_endpoint`, `identity_access`, `infrastructure_it`. `not_relevant` → dropped. `unclear` → held | JSON enum + evidence |
 | C1 | Segment | context-clause | Industry → `banking` (Banking, Financial Services), `insurance`, `public_sector` (Government Administration, Public Policy, Public Safety), `energy` (Oil and Gas), `law` (Law Practice, Legal Services) | enum |
 | C2 | Start month | context-clause | Month name of `Start Date` | text |
-| E1 | Email sendable | trigger (email channel) | Email found and validated, its domain equals the company domain, `Email Source` and `Email Found On` filled | boolean |
+| E1 | Email sendable | trigger (email channel) | Email found and validated, its domain equals the company domain, `Email Source` and `Email Found On` filled. `Email Found On` is a plain date column: after every waterfall run, set it to the run date on each row that got an email (by hand or with `tools/rex`), or E1 stays false | boolean |
 
 C1 and C2 never route. No count routes, so there are no count clusters. R1 values: `mobility` and `infrastructure` route, `dpo` is held, `other` is dropped.
 

@@ -34,6 +34,7 @@ Root files: `CLAUDE.md` (this file), `README.md` (what the repo is), `.gitignore
   - `context/docs/gtm-system.md`: end-to-end outbound GTM system (12 steps, tools, open decisions, build order).
   - `context/docs/partner-region-policy.md`: decision memo for Hypergate sales on outbound in partner regions.
   - `context/docs/compliance-cold-outreach.md`: research brief for legal on cold email and LinkedIn rules by country (not legal advice).
+  - `context/docs/clay-tables-audiences-workflows.md`: which Clay surface (table, Audiences, Workflow) does which job in the new-joiner play, and why.
 - `context/docs/research/`: raw research and source material with links. Read when you need to verify or cite a fact.
   - `company.md`, `customers.md`, `competitors.md`, `market.md`, `signals.md`, `voice.md`.
 - `diagrams/`: flow chart specs and their rendered SVGs, built with `/miro-gtm-flowchart`.

@@ -11,8 +11,49 @@ Spec: [../workflow-spec.md](../workflow-spec.md) (STRUCTURE-APPROVED 2026-11-20,
 | Table: Exclusion & Block list | https://app.clay.com/workspaces/1206365/workbooks/wb_0too2hqE6A9WA6UQCp8/tables/t_0topxuyxz6fadCao9d7 |
 | Table: People (main table) | https://app.clay.com/workspaces/1206365/workbooks/wb_0too2hqE6A9WA6UQCp8/tables/t_0torupffE645kbSrVwk |
 | Table: Companies | https://app.clay.com/workspaces/1206365/workbooks/wb_0too2hqE6A9WA6UQCp8/tables/t_0tose66FtiXahD5gC9D |
+| Workflow: Hypergate · Load new joiners to Audiences (manual trigger, run as routine `workflow:wf_0tp0mx49VhNtGBKNhnM`) | https://app.clay.com/workspaces/1206365/terracotta/tc-workflows/wf_0tp0mx49VhNtGBKNhnM |
+| Audience segment: Hypergate · Ready to Contact, no email yet (`audseg_0tp0n0q4kjc8CvDpV3j`, dynamic) | Audiences > People > segments |
+| Workflow: Hypergate · Email second try (segment trigger, Wiza, Findymail verify, 2 branches, write-back) | https://app.clay.com/workspaces/1206365/terracotta/tc-workflows/wf_0tp0n2d6yAhMeMQvwXd |
+
+## Audiences and Workflows (added 2026-11-24)
+
+Why each surface: [clay-tables-audiences-workflows.md](../../../../context/docs/clay-tables-audiences-workflows.md).
+
+```mermaid
+flowchart LR
+  T[People table<br/>search, gates, AI, routing] -->|routine: Load new joiners| A[(Audiences: 87 people<br/>+ Hypergate fields)]
+  A --> S{{Segment: Ready to Contact,<br/>email market, not public sector,<br/>no email, no lookup result}}
+  S -->|person enters| W1[Find email<br/>Wiza, LinkedIn profile]
+  W1 --> C1{Email found?}
+  C1 -->|yes| V[Verify<br/>Findymail]
+  C1 -->|no| N1[Write: not found]
+  V --> C2{Verified?}
+  C2 -->|yes| Y[Write: email found]
+  C2 -->|no| N2[Write: not verified]
+  Y & N1 & N2 -->|Email Lookup filled| X[Leaves segment]
+```
+
+- Audiences people fields added: Hypergate Ready to Contact (boolean), Hypergate Market, Hypergate Public Sector (boolean), Hypergate Cell, Hypergate Status, Hypergate Email Lookup, Hypergate Clay Row ID. Matched on LinkedIn URL, so a re-load updates rather than duplicates.
+- The segment started with 6 people: Ready to Contact, email market, not public sector, but the table's 5-provider waterfall found no email.
+- Workflow run on all 6 (2026-11-24): 1 email found and verified (written to Audiences), 3 found but not verified by Findymail (not written), 2 not found. All three branches used; the segment drained to 0. Cost: 12 data credits and 8 action credits in total. Published: it now runs by itself for anyone who enters the segment (for example after the next search pull is loaded).
+- Write-back of fixed text needs a code node (Label: ...) feeding the write step; a reference with no variable passes validation but writes nothing.
+- The verified email found by the workflow is in Audiences only. The People table still shows that person as LinkedIn only.
+- Third pull (2026-11-24): after reloading all 126 people, 2 new people entered the segment. The live trigger did not start runs within about 5 minutes, so the published version was run on them by hand (`runs test --audience-segment --live`): 1 not found, 1 not verified. Whether segment entry caused by another workflow's write fires the trigger is unconfirmed.
 
 The links need a login to the Clay workspace. Workbook and table links are built from the IDs Clay returned; if one doesn't open, use the folder link.
+
+## Current totals (read from Clay on 2026-11-24, all rows, after the third pull)
+
+| Measure | Count |
+|---|---|
+| People | 126 (87 + 39 from the third pull: UK 12, CH 11, DE 7, FR 6, CA 3) |
+| Companies | 111 |
+| Ready to Contact | 53 (cell A Mobility 8, cell B Infrastructure 45) |
+| Ready for Email | 26 |
+| Status | Held 61 · Ready to send 26 · LinkedIn only 24 · Dropped 12 · Review: email domain 3 |
+| Spend on 2026-11-24 | About 68 credits for the third pull (Enrich company 32, AI about 5, email waterfall about 31) and 15 for the Audiences email workflow (8 runs), 83.2 in total, read from the workspace balance |
+
+The 2026-11-20 scorecard below is kept as history; its totals are superseded by this table.
 
 ## Results scorecard (read from Clay on 2026-11-20, all rows)
 
