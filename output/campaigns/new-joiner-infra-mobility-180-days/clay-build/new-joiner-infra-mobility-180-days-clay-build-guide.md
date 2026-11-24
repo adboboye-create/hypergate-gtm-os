@@ -246,7 +246,7 @@ Table settings → **Deduplicate** → `LinkedIn Profile`.
 5. Table settings → **Deduplicate** → `Company Domain`.
 6. Run Send table data on **1 row**, check the company arrived, then the rest.
 
-**Check:** Companies has no duplicate domains. Count over the **All rows** view, not the table's first view (the existing table opens on a filtered "ICP Pass" view). The first build had no dedupe: 77 company rows with 7 domains repeated, fixed on 2026-11-20 by turning dedupe on (79 companies after the second pull).
+**Check:** Companies has no duplicate domains. Count over the **All rows** view, not a filtered view (the old filtered "ICP Pass" view was deleted on 2026-11-24). The first build had no dedupe: 77 company rows with 7 domains repeated, fixed on 2026-11-20 by turning dedupe on (79 companies after the second pull).
 **Cost:** free.
 
 ### 4.2 Enrich each company
@@ -291,7 +291,7 @@ Table settings → **Deduplicate** → `LinkedIn Profile`.
 **Check:** read 3 rows by eye. After the second pull, 72 of 79 companies pass (one fails on size: 10,001+ staff), and some are public sector.
 **Cost:** free.
 
-> The old ICP Pass columns in both tables (now named `(unused) old ICP Pass`) are left over from the first build and no longer drive anything. Delete them or leave them; see [Things the spec needs to fix](#things-the-spec-needs-to-fix) 6.
+> The old ICP Pass columns left over from the first build, and the Companies "ICP Pass" view that filtered on one, were deleted on 2026-11-24.
 
 ---
 
@@ -606,7 +606,7 @@ Found while writing this guide. Update [`workflow-spec.md`](../workflow-spec.md)
 3. **Section 3, Send table data:** the existing build sent everyone to Companies. Fixed in Clay on 2026-11-20 (run condition in Part 4.1); no spec change needed.
 4. **Section 4, G4 90-day rule:** nothing records "last contacted" yet. Add `Last Contacted At` when the sequencer is connected (Part 12), and replace it with the Zoho CRM check later.
 5. **Section 4, E1 provenance:** `Email Found On` can't be set by a formula. Write into the spec that it's filled on each waterfall run (by hand or by `tools/rex`), or the 30-day notice clock (G7-C3) can't be checked.
-6. **Leftover columns:** the old ICP Pass columns and the 6 disabled waterfall steps (Hunter, Prospeo, Datagma, Wiza, SMARTe, Dropcontact, run condition `false`) do nothing. Renamed with an `(unused)` prefix on 2026-11-20; delete them if you prefer.
+6. **Leftover columns:** the 6 disabled waterfall steps (Hunter, Prospeo, Datagma, Wiza, SMARTe, Dropcontact, run condition `false`) do nothing. Renamed with an `(unused)` prefix on 2026-11-20; delete them if you prefer. The old ICP Pass columns and view were deleted on 2026-11-24.
 7. **Column names:** done on 2026-11-20. Each waterfall step is now named by position and provider (`Find Email 1 (Icypeas)`, `Verify 1 (Findymail)` and so on), the lookups are `Exclusion Lookup` and `Company Lookup`, and Send table data is `Send to Companies`.
 8. **Section 2, search changes:** law industries, France and the US are in the spec but not yet in the live search. Re-run the search with them (free) and import into the same table.
 9. **Section 4, A1 prompt:** done on 2026-11-20. Rule added (MDM next to data words = master data, not_relevant); the "MDM & RDM Analyst" row re-ran as not_relevant (0.2 credits).
