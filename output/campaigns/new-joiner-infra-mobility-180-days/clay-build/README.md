@@ -13,6 +13,7 @@ Spec: [../workflow-spec.md](../workflow-spec.md) (STRUCTURE-APPROVED 2026-11-20,
 | Table: Companies | https://app.clay.com/workspaces/1206365/workbooks/wb_0too2hqE6A9WA6UQCp8/tables/t_0tose66FtiXahD5gC9D |
 | Workflow: Hypergate · Load new joiners to Audiences (manual trigger, run as routine `workflow:wf_0tp0mx49VhNtGBKNhnM`) | https://app.clay.com/workspaces/1206365/terracotta/tc-workflows/wf_0tp0mx49VhNtGBKNhnM |
 | Audience segment: Hypergate · Ready to Contact, no email yet (`audseg_0tp0n0q4kjc8CvDpV3j`, dynamic) | Audiences > People > segments |
+| Audience segment: Hypergate · Ready to Contact (`audseg_0tp57wu3qCr4nCxx2SA`, dynamic, Ready to Contact = true; 53 people on 2026-11-27) | Audiences > People > segments |
 | Workflow: Hypergate · Email second try (segment trigger, Wiza, Findymail verify, 2 branches, write-back) | https://app.clay.com/workspaces/1206365/terracotta/tc-workflows/wf_0tp0n2d6yAhMeMQvwXd |
 
 ## Audiences and Workflows (added 2026-11-24)
