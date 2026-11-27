@@ -53,6 +53,7 @@ Root files: `CLAUDE.md` (this file), `README.md` (what the repo is), `.gitignore
 - `tools/`: scripts and notes on tool integrations. Read before automating anything.
   - `tools/sequencer-comparison.md`: EmailBison vs Instantly vs PlusVibe, with recommendation.
   - `tools/rex/`, `tools/crawl4ai/`, `tools/agent-browser/`: see Tools below.
+  - `tools/hubspot/README.md`: HubSpot MCP setup (official `hubspot` server, OAuth) and rules for writes.
 - `weekly-priorities/`: one file per ISO week (YYYY-Www.md) with the week's goals. Read at the start of every session.
   - `2026-W46.md`.
 - `work-log/`: one file per ISO week, matching the priorities file, with timestamped entries. Write to it after every change.
@@ -79,5 +80,6 @@ From `bolaji-ships/gtm-starter-kit`. Method docs they read live in `knowledge-ba
 
 - GTM stack: to confirm with the team.
 - Notion: read-only mirror of `context/` and `output/` (research excluded) at "[Hypergate] GTM OS": https://app.notion.com/p/4171b751cd34815fbd5fdc942beddaf4 (private page, mirrored 2026-11-13). GitHub stays the source of truth; re-sync after changes. Connected through the project `notion` MCP in `.mcp.json`.
+- HubSpot: official `hubspot` MCP server (https://mcp.hubspot.com, OAuth), in this project's local Claude Code config (`~/.claude.json`, not in Git). EU1 data hosting. See `tools/hubspot/README.md`.
 - `tools/rex/`: unofficial Python SDK for working inside Clay with your own browser session. Start with `GETTING_STARTED.md`.
 - `tools/crawl4ai/`, `tools/agent-browser/`: install guides; both are installed separately.
