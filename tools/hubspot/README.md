@@ -13,4 +13,4 @@ Server `hubspot`: HubSpot's official remote MCP server (https://mcp.hubspot.com)
 
 ## History
 
-- 2026-11-27: a second server, `hubspot-crm` (`@hubspot/mcp-server@0.4.0` with a private app token), was tried and removed. The token was valid but never reached the server process (401 every time), and the official server already covers the same work. If the private app still exists in HubSpot, delete it or rotate its token (Settings > Integrations > Private Apps).
+- 2026-11-27: a second server, `hubspot-crm` (`@hubspot/mcp-server@0.4.0` with a HubSpot service key), was tried and removed. The key was valid but never reached the server process (401 every time), and the official server already covers the same work. The service key was deleted in HubSpot (Development > Keys > Service keys) the same day.
